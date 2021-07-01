@@ -4,23 +4,22 @@
 #ENABLE_STACK_CHECKING
 #ENABLE_TRACE
 
-Digital_Input Check_Time;
 String_Input Time_String[128];
 String_Input Date_String[128];
-Analog_Output Hour, Minute, Analog_Month, Analog_Day, Analog_Year;
-String_Output Current_Time;
 
 
 
-Change Time_String
+Change Time_String  //Use format "Hour:Minute"
 	{
-	Hour = atoi(Left(Time_String, find(":", Time_String)-1));
-	Minute = atoi(Right(Time_String, Len(Time_String)- find(":", Time_String)));
+	   integer Hour, Minute;
 
-	SetClock(Hour, Minute, 0);
-    }
+			Hour = atoi(Left(Time_String, find(":", Time_String)-1));
+			Minute = atoi(Right(Time_String, Len(Time_String)- find(":", Time_String)));
+		
+		SetClock(Hour, Minute, 0);
+	}
 
-Change Date_String
+Change Date_String  // Use format "Month/Day/Year"
 
 	{
 		integer SetMonth, SetDay, SetYear;
