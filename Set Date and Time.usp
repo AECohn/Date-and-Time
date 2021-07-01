@@ -1,0 +1,30 @@
+//Programmer Aviv Cohn
+#CATEGORY "46" "Aviv's Modules" // Custom
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+
+Digital_Input Check_Time;
+String_Input Time_String[128];
+Analog_Output Hour, Minute;
+String_Output Current_Time;
+
+
+
+Change Time_String
+	{
+	//integer divider;
+	//divider = find(":", Time_String);
+	Hour = atoi(Left(Time_String, find(":", Time_String)-1));
+	Minute = atoi(Right(Time_String, Len(Time_String)- find(":", Time_String)));
+
+	SetClock(Hour, Minute, 0);
+
+    }
+
+
+Push Check_Time
+{
+ Current_Time = Time();
+
+}
