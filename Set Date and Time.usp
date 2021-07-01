@@ -23,11 +23,13 @@ Change Time_String
 Change Date_String
 
 	{
-		string SetMonth[128], SetDay[128], SetYear[128];
+		integer SetMonth, SetDay, SetYear;
          
-			Analog_Month = atoi(Left(Date_String, find("/", Date_String)-1));
-			Analog_Day = atoi(Mid(Date_String, find("/", Date_string)+1, reversefind("/", Date_String)-1));
-			Analog_Year = atoi(Right(Date_String, Len(Date_String)- reversefind("/", Date_String))); 
+			SetMonth = atoi(Left(Date_String, find("/", Date_String)-1));
+			SetDay = atoi(Mid(Date_String, find("/", Date_string)+1, reversefind("/", Date_String)-1));
+			SetYear = atoi(Right(Date_String, Len(Date_String)- reversefind("/", Date_String)));
+
+		SetDate(SetMonth, SetDay, SetYear);	 
 
 	}
 
