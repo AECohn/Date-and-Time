@@ -4,58 +4,79 @@
 #ENABLE_STACK_CHECKING
 #ENABLE_TRACE
 
+#User_SimplSharp_Library "Schedule"
+
 String_Input Time_String[128], Date_String[128], Event_Input[128];
+String_Output Event_Feedback;
+Digital_Output Event_Lapsed;
+
+Schedule_class mySchedule;
+
+function main()
+{
+
+ RegisterEvent(mySchedule, Update, Event_Callback);
+
+}
+
+integer_function Get_Hours(string Time_Input)
+
+{
+    integer Hour;
+		Hour = atoi(Left(Time_Input, find(":", Time_Input)-1));
+
+		if(FindNoCase("P", Time_Input) != 0 && FindNoCase("M", Time_Input) !=0) //more flexible this way, for example, this allows the user to enter any string, and as long as 'p' and 'm' are included, it will work
+                 {
+				if(Hour != 12)
+				     Hour = Hour + 12;
+				  }
+	    else
+				if(Hour = 12)
+					    Hour = Hour-12;
+		return (Hour);
+}
+
+integer_function Get_Minutes(string Time_Input)
+
+	{
+       return (atoi(Right(Time_Input, Len(Time_Input)- find(":", Time_Input))));
+	}
+
 
 
 
 Change Time_String  //Use format "Hour:Minute"
 	{
-	   integer Hour, Minute;
-
-
-			Hour = atoi(Left(Time_String, find(":", Time_String)-1));
-			Minute = atoi(Right(Time_String, Len(Time_String)- find(":", Time_String)));
-
-			if(FindNoCase("P", Time_String) != 0 && FindNoCase("M", Time_String) !=0) //more flexible this way, for example, this allows the user to enter "P.M." or "P.m"
-				{
-					if(Hour != 12)
-					{
-                  	Hour = Hour + 12;
-					}
-                    					
-				}
-            else
-				{
-                 if(Hour = 12)
-					{
-                     Hour = Hour-12;
-					}
-
-				}
-			
-		
-		SetClock(Hour, Minute, 0);
-
-
+		SetClock(Get_Hours(Time_String), Get_Minutes(Time_String), 0);
 	}
 
 Change Date_String  // Use format "Month/Day/Year"
 
 	{
 		integer SetMonth, SetDay, SetYear;
-         
+
 			SetMonth = atoi(Left(Date_String, find("/", Date_String)-1));
 			SetDay = atoi(Mid(Date_String, find("/", Date_string)+1, reversefind("/", Date_String)-1));
 			SetYear = atoi(Right(Date_String, Len(Date_String)- reversefind("/", Date_String)));
 
-		SetDate(SetMonth, SetDay, SetYear);	
+		  SetDate(SetMonth, SetDay, SetYear);
 	}
 
+Change Event_Input
+{
+myschedule.Scheduled_Time = Event_Input;
+Event_Feedback = myschedule.Scheduled_Time;
+}
 
 
- 
-                 
-//00:11:29.281    021020210437000000    DateTime
+eventhandler Event_Callback(Schedule_class sender, EventArgs e)
+{
+    Pulse(0, Event_Lapsed);
+}
+
+
+
+
 
 
 
