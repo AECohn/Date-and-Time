@@ -1,0 +1,56 @@
+//Programmer Aviv Cohn
+#CATEGORY "46" "Aviv's Modules" // Custom
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+
+                       
+String_Input Hour_Input[8], Minute_Input[8];
+
+String_Output Hour_Output, Minute_Output;
+Digital_Output PM;
+Integer Stored_Minute, Stored_Hour;
+
+Change Hour_Input //formats Hour output and indicates if time is PM
+
+{
+	integer Hour;
+	Hour = atoi(Hour_Input);
+
+	if(Hour != Stored_Hour)
+{
+ 		 Stored_Hour = Hour;
+			if(Hour > 12)
+			{
+		      Hour_Output = itoa(Hour - 12);
+			  PM = On;	
+			}
+		
+			else if (Hour = 12)
+			{
+		     Hour_Output = Hour_Input;
+			 PM = On;
+			}
+			else if (Hour < 12)
+			{
+		     Hour_Output = Hour_Input;
+			 PM = Off;
+			}	  
+
+	}
+		
+}
+
+Change Minute_Input //Updates Minute output only once every minute
+{
+
+integer Minute;
+
+Minute = atoi(Minute_Input);
+
+if(Minute != Stored_Minute)
+  {
+   Stored_Minute = Minute;
+   Minute_Output = Minute_Input;
+  }
+}
