@@ -8,48 +8,57 @@
 
 String_Input Time_String[128], Date_String[128], Event_Input[128];
 String_Output Event_Feedback;
+Digital_Input Recall_Schedule;
 Digital_Output Event_Lapsed;
 integer lock;
 
 Schedule_class mySchedule;
 
-function main()
-{
+function Recall_Scheduled_Shutdown()
+  {
+    Event_Feedback = mySchedule.Read_Schedule();
+  }
 
- RegisterEvent(mySchedule, Update, Event_Callback);
-
-}
+integer_function Get_Minutes(string Time_Input)
+  {
+     return (atoi(Right(Time_Input, Len(Time_Input)- find(":", Time_Input))));
+  }
 
 integer_function Get_Hours(string Time_Input)
 
-{
+  {
     integer Hour;
-		Hour = atoi(Left(Time_Input, find(":", Time_Input)-1));
+  	Hour = atoi(Left(Time_Input, find(":", Time_Input)-1));
 
-		if(FindNoCase("P", Time_Input) != 0 && FindNoCase("M", Time_Input) !=0) //more flexible this way, for example, this allows the user to enter any string, and as long as 'p' and 'm' are included, it will work
+  	if(FindNoCase("P", Time_Input) != 0 && FindNoCase("M", Time_Input) !=0) //more flexible this way, for example, this allows the user to enter any string, and as long as 'p' and 'm' are included, it will work
                  {
-				if(Hour != 12)
-				     Hour = Hour + 12;
-				  }
-	    else
-				if(Hour = 12)
-					    Hour = Hour-12;
-		return (Hour);
-}
+  			if(Hour != 12)
+  			     Hour = Hour + 12;
+  			  }
+      else
+  			if(Hour = 12)
+  				    Hour = Hour-12;
+  	return (Hour);
+  }
 
-integer_function Get_Minutes(string Time_Input)
+function main()
+  {
+     RegisterEvent(mySchedule, Update, Event_Callback);
+     Recall_Scheduled_Shutdown();
+  }
 
-	{
-       return (atoi(Right(Time_Input, Len(Time_Input)- find(":", Time_Input))));
-	}
 
 
+Push Recall_Schedule
+  {
+    Recall_Scheduled_Shutdown();
+  }
 
 
 Change Time_String  //Use format "Hour:Minute"
-	{
-		SetClock(Get_Hours(Time_String), Get_Minutes(Time_String), 0);
-	}
+  {
+  	 SetClock(Get_Hours(Time_String), Get_Minutes(Time_String), 0);
+  }
 
 Change Date_String  // Use format "Month/Day/Year"
 
@@ -64,26 +73,24 @@ Change Date_String  // Use format "Month/Day/Year"
 	}
 
 Change Event_Input
-{
-myschedule.Scheduled_Time = Event_Input;
-Event_Feedback = myschedule.Scheduled_Time;
-}
+  {
+      myschedule.Scheduled_Time = Event_Input;
+      Event_Feedback = myschedule.Scheduled_Time;
+  }
                         
 
  eventhandler Event_Callback(Schedule_class sender, EventArgs e)
-{
-
-   if(lock = off)
-		{
-    		Pulse(0, Event_Lapsed);
-			lock = on;
-			wait(6000) //wait 1 minute
-				{
-                 lock = off;
-				}
-		}	
-		
-}
+  {
+     if(lock = off)
+  		{
+      	Pulse(0, Event_Lapsed);
+  			lock = on;
+  			wait(6000) //wait 1 minute
+  				{
+                   lock = off;
+  				}
+  		}	
+  }
 
 
 
