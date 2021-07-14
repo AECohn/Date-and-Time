@@ -9,6 +9,7 @@
 String_Input Time_String[128], Date_String[128], Event_Input[128];
 String_Output Event_Feedback;
 Digital_Output Event_Lapsed;
+integer lock;
 
 Schedule_class mySchedule;
 
@@ -67,11 +68,21 @@ Change Event_Input
 myschedule.Scheduled_Time = Event_Input;
 Event_Feedback = myschedule.Scheduled_Time;
 }
+                        
 
-
-eventhandler Event_Callback(Schedule_class sender, EventArgs e)
+ eventhandler Event_Callback(Schedule_class sender, EventArgs e)
 {
-    Pulse(0, Event_Lapsed);
+
+   if(lock = off)
+		{
+    		Pulse(0, Event_Lapsed);
+			lock = on;
+			wait(6000) //wait 1 minute
+				{
+                 lock = off;
+				}
+		}	
+		
 }
 
 
