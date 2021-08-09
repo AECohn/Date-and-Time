@@ -1,0 +1,58 @@
+//Programmer Aviv Cohn
+#CATEGORY "46" "Aviv's Modules" // Custom
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+
+Digital_Input PM_Active, Send, Mode_Press[3];
+String_Input Settings_Keypad_Input[32];
+String_Output Set_Time, Set_Date, Scheduled_Event;
+integer Active_Mode;
+
+
+Push Mode_Press
+
+{
+Active_Mode = getlastmodifiedarrayindex();
+}
+
+Push Send
+{
+  cswitch(Active_Mode)
+	{
+     case (1):
+		{
+         if(PM_Active)
+			{
+             Set_Time = Settings_Keypad_Input + "PM";
+			}
+		 else
+			{
+             Set_Time = Settings_Keypad_Input;
+			}
+            break;
+		}
+
+     case (2):
+		{
+			Set_Date = Settings_Keypad_Input;
+            break;
+		}
+
+     case (3):
+		{
+         if(PM_Active)
+			{
+             Scheduled_Event = Settings_Keypad_Input + "PM";
+			}
+		 else
+			{
+             Scheduled_Event = Settings_Keypad_Input;
+			}
+            break;
+		}
+
+	}
+}
+
+
