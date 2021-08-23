@@ -34,7 +34,7 @@ namespace Schedule
                 try
                 {
                     Formatted_Schedule = DateTime.Parse(value); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008)
-                    using (StreamWriter Schedule_Writer = new StreamWriter("\\schedule\\Auto_Shutdown_Schedule.json"))
+                    using (StreamWriter Schedule_Writer = new StreamWriter("\\user\\Auto_Shutdown_Schedule.json")) //will appear as "//User" via ftp
                     {
                         Schedule_Writer.Write(JsonConvert.SerializeObject(Formatted_Schedule));
                     }
@@ -55,7 +55,7 @@ namespace Schedule
         {
              try
             {
-                using (StreamReader Schedule_Reader = new StreamReader("\\schedule\\Auto_Shutdown_Schedule.json"))
+                using (StreamReader Schedule_Reader = new StreamReader("\\user\\Auto_Shutdown_Schedule.json"))
                 {
                     Recalled_Schedule = JsonConvert.DeserializeObject<DateTime>(Schedule_Reader.ReadToEnd());
                     return Recalled_Schedule.ToString("h:mm tt"); 
