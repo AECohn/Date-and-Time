@@ -9,7 +9,7 @@
 String_Input Time_String[128], Date_String[128], Event_Input[128];
 String_Output Event_Feedback;
 Digital_Input Recall_Schedule;
-Digital_Output Event_Lapsed;
+Digital_Output Event_Elapsed;
 integer lock;
 
 Schedule_class mySchedule;
@@ -83,7 +83,7 @@ Change Event_Input
   {
      if(lock = off)
   		{
-      	Pulse(0, Event_Lapsed);
+      	Pulse(0, Event_Elapsed);
   			lock = on;
   			wait(6000) //wait 1 minute
   				{
