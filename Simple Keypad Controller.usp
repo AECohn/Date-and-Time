@@ -5,6 +5,7 @@
 #ENABLE_TRACE
 
 Digital_Input PM_Active, Send, Mode_Press[3];
+Digital_Output Active_Mode_FB[3];
 String_Input Settings_Keypad_Input[32];
 String_Output Set_Time, Set_Date, Scheduled_Event;
 integer Active_Mode;
@@ -14,6 +15,9 @@ Push Mode_Press
 
 {
 Active_Mode = getlastmodifiedarrayindex();
+
+Setarray(Active_Mode_FB, 0);
+Active_Mode_FB[Active_Mode] = 1;
 }
 
 Push Send
