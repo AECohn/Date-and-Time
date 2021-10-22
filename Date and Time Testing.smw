@@ -1481,12 +1481,13 @@ Nm=Simple Schedule.usp
 ObjVer=1
 PrH=4
 CF=2
-n1I=1
+n1I=2
 n2I=1
 n1O=1
-mI=2
-I1=6
-I2=7
+mI=3
+I1=8
+I2=6
+I3=7
 mO=2
 tO=2
 O1=4
@@ -1518,4 +1519,9 @@ ObjTp=Sg
 H=7
 Nm=S-1_Event_Input
 SgTp=4
+]
+[
+ObjTp=Sg
+H=8
+Nm=Save_Schedule
 ]

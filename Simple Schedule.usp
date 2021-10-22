@@ -6,13 +6,13 @@
 
 #User_SimplSharp_Library "Schedule"
 
+Digital_Input _Skip_, Save_Schedule, Recall_Schedule;
+Digital_Output _Skip_, Event_Elapsed;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
-Digital_Input Recall_Schedule;
-Digital_Output Event_Elapsed;
 integer lock;
 
-string_parameter _skip_, _skip_, Filename[128];
+string_parameter  Filename[128];
 
 Schedule_class mySchedule;
 
@@ -28,7 +28,7 @@ Push Recall_Schedule
 
 
 
-Change Event_Input
+Push Save_Schedule
   {
       myschedule.Scheduled_Time = Event_Input;
       Event_Feedback = myschedule.Scheduled_Time;
