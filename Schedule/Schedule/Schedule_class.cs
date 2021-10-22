@@ -72,7 +72,7 @@ namespace Schedule
         public event EventHandler Update;
         public Schedule_class()
         {
-            Scheduling = new CTimer(scheduler, this, 0, 5000);
+            Scheduling = new CTimer(scheduler, this, 0, 5000); //Checks if current time matches recalled schedule every 5 seconds
         }
         private void scheduler(object obj)
             {
