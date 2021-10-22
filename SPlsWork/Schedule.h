@@ -14,7 +14,7 @@ namespace Schedule;
         STRING_FUNCTION ToString ();
 
         // class variables
-        INTEGER __class_id__;
+        STRING filename[];
 
         // class properties
         STRING Scheduled_Time[];

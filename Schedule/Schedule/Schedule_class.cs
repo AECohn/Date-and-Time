@@ -12,6 +12,9 @@ namespace Schedule
         DateTime Formatted_Schedule;
         DateTime Recalled_Schedule;
         bool Schedule_Set;
+        int Poll;
+
+        public string filename;
 
         private string scheduled_time;
         public string Scheduled_Time
@@ -21,7 +24,7 @@ namespace Schedule
             {
                 if (Schedule_Set)
                 {
-                    return Read_Schedule();
+                    return Read_Schedule(); //When the schedule's value is retrieved, it reads the schedule from the file so it can be evaluated by the timer
                 }
                 else
                 {
@@ -33,8 +36,8 @@ namespace Schedule
                 Schedule_Set = true;
                 try
                 {
-                    Formatted_Schedule = DateTime.Parse(value); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008)
-                    using (StreamWriter Schedule_Writer = new StreamWriter("\\user\\Auto_Shutdown_Schedule.json")) //will appear as "//User" via ftp
+                    Formatted_Schedule = DateTime.Parse(value.ToUpper()); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008) Converting to upper as lowercase pm (and presumably am) is not working properly, despite providing accurate feedback
+                    using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename))) 
                     {
                         Schedule_Writer.Write(JsonConvert.SerializeObject(Formatted_Schedule));
                     }
@@ -55,7 +58,7 @@ namespace Schedule
         {
              try
             {
-                using (StreamReader Schedule_Reader = new StreamReader("\\user\\Auto_Shutdown_Schedule.json"))
+                using (StreamReader Schedule_Reader = new StreamReader(String.Format("{0}{1}.json", "\\user\\", filename)))
                 {
                     Recalled_Schedule = JsonConvert.DeserializeObject<DateTime>(Schedule_Reader.ReadToEnd());
                     return Recalled_Schedule.ToString("h:mm tt"); 
@@ -76,6 +79,8 @@ namespace Schedule
         }
         private void scheduler(object obj)
             {
+            CrestronConsole.PrintLine(Poll.ToString());
+            Poll++;
                 if (DateTime.Now.Hour == Recalled_Schedule.Hour && DateTime.Now.Minute == Recalled_Schedule.Minute && Schedule_Set)                    
                         Update(this, new EventArgs());                    
             }

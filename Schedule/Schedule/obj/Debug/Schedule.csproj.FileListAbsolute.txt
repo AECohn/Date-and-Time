@@ -1,0 +1,11 @@
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\Schedule.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\Schedule.pdb
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\SimplSharpCustomAttributesInterface.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\SimplSharpHelperInterface.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\SimplSharpNewtonsoft.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\SimplSharpReflectionInterface.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\SimplSharpSQLHelperInterface.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\bin\Debug\Newtonsoft.Json.Compact.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\obj\Debug\Schedule.dll
+C:\Users\acohn\Documents\Code\Modules\Date-and-Time\Schedule\Schedule\obj\Debug\Schedule.pdb

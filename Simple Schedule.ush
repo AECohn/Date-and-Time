@@ -26,25 +26,27 @@
   InputSigType1=Digital
   OutputCue1=Event_Elapsed
   OutputSigType1=Digital
-  InputList2Cue1=Time_String
+  InputList2Cue1=Event_Input
   InputList2SigType1=Serial
-  InputList2Cue2=Date_String
-  InputList2SigType2=Serial
-  InputList2Cue3=Event_Input
-  InputList2SigType3=Serial
   OutputList2Cue1=Event_Feedback
   OutputList2SigType1=Serial
   ParamCue1=[Reference Name]
+  ParamCue2=[~UNUSED~]
+  ParamSigType2=Constant
+  ParamCue3=[~UNUSED~]
+  ParamSigType3=Constant
+  ParamCue4=Filename
+  ParamSigType4=String
   MinVariableInputs=1
   MaxVariableInputs=1
-  MinVariableInputsList2=3
-  MaxVariableInputsList2=3
+  MinVariableInputsList2=1
+  MaxVariableInputsList2=1
   MinVariableOutputs=1
   MaxVariableOutputs=1
   MinVariableOutputsList2=1
   MaxVariableOutputsList2=1
-  MinVariableParams=0
-  MaxVariableParams=0
+  MinVariableParams=3
+  MaxVariableParams=3
   Expand=expand_separately
   Expand2=expand_separately
   ProgramTree=Logic
@@ -60,7 +62,8 @@
   CompilerParamCode5=14
   NumFixedParams=1
   Pp1=1
-  MPp=1
+  Pp4=4
+  MPp=4
   NVStorage=10
   ParamSigType1=String
   SmplCInputCue1=o#
@@ -80,6 +83,10 @@
   NoS=False
 [END]
 [BEGIN]
-ObjTp=Status
-HeaderCompatible=False
+  ObjTp=Dp
+  H=4
+  Tp=1
+  HD=False
+  NoS=False
+  VVS=0
 [END]

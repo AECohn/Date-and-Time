@@ -6,19 +6,15 @@
 
 #User_SimplSharp_Library "Schedule"
 
-String_Input Time_String[128], Date_String[128], Event_Input[128];
+String_Input  Event_Input[128];
 String_Output Event_Feedback;
 Digital_Input Recall_Schedule;
 Digital_Output Event_Elapsed;
 integer lock;
 
-Schedule_class mySchedule;
+string_parameter _skip_, _skip_, Filename[128];
 
-function main()
-  {
-     RegisterEvent(mySchedule, Update, Event_Callback);
-     Recall_Scheduled_Shutdown();
-  }
+Schedule_class mySchedule;
 
 function Recall_Scheduled_Shutdown()
   {
@@ -51,6 +47,15 @@ Change Event_Input
   				}
   		}	
   }
+
+function main()
+  {
+	mySchedule.filename = Filename;
+     RegisterEvent(mySchedule, Update, Event_Callback);
+     Recall_Scheduled_Shutdown();
+  }
+
+
 
 
 
