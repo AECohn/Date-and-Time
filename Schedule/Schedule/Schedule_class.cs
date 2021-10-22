@@ -12,7 +12,6 @@ namespace Schedule
         DateTime Formatted_Schedule;
         DateTime Recalled_Schedule;
         bool Schedule_Set;
-        int Poll;
 
         public string filename;
 
@@ -79,8 +78,6 @@ namespace Schedule
         }
         private void scheduler(object obj)
             {
-            CrestronConsole.PrintLine(Poll.ToString());
-            Poll++;
                 if (DateTime.Now.Hour == Recalled_Schedule.Hour && DateTime.Now.Minute == Recalled_Schedule.Minute && Schedule_Set)                    
                         Update(this, new EventArgs());                    
             }
