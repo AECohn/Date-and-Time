@@ -4,20 +4,8 @@
 #ENABLE_STACK_CHECKING
 #ENABLE_TRACE
 
-#User_SimplSharp_Library "Schedule"
+String_Input Time_String[128], Date_String[128];
 
-String_Input Time_String[128], Date_String[128], Event_Input[128];
-String_Output Event_Feedback;
-Digital_Input Recall_Schedule;
-Digital_Output Event_Elapsed;
-integer lock;
-
-Schedule_class mySchedule;
-
-function Recall_Scheduled_Shutdown()
-  {
-    Event_Feedback = mySchedule.Read_Schedule();
-  }
 
 integer_function Get_Minutes(string Time_Input)
   {
@@ -41,19 +29,6 @@ integer_function Get_Hours(string Time_Input)
   	return (Hour);
   }
 
-function main()
-  {
-     RegisterEvent(mySchedule, Update, Event_Callback);
-     Recall_Scheduled_Shutdown();
-  }
-
-
-
-Push Recall_Schedule
-  {
-    Recall_Scheduled_Shutdown();
-  }
-
 
 Change Time_String  //Use format "Hour:Minute"
   {
@@ -72,25 +47,7 @@ Change Date_String  // Use format "Month/Day/Year"
 		  SetDate(SetMonth, SetDay, SetYear);
 	}
 
-Change Event_Input
-  {
-      myschedule.Scheduled_Time = Event_Input;
-      Event_Feedback = myschedule.Scheduled_Time;
-  }
                         
-
- eventhandler Event_Callback(Schedule_class sender, EventArgs e)
-  {
-     if(lock = off)
-  		{
-      	Pulse(0, Event_Elapsed);
-  			lock = on;
-  			wait(6000) //wait 1 minute
-  				{
-                   lock = off;
-  				}
-  		}	
-  }
 
 
 
