@@ -35,7 +35,7 @@ namespace Schedule
                 Schedule_Set = true;
                 try
                 {
-                    Formatted_Schedule = DateTime.Parse(value.ToUpper()); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008) Converting to upper as lowercase pm (and presumably am) is not working properly, despite providing accurate feedback
+                    Formatted_Schedule = DateTime.Parse(value.ToUpper()); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008 and produces methodnotfound exception) Converting to upper as lowercase pm (and presumably am) is not working properly, despite providing accurate feedback
                     using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename))) 
                     {
                         Schedule_Writer.Write(JsonConvert.SerializeObject(Formatted_Schedule));
@@ -76,10 +76,12 @@ namespace Schedule
         {
             Scheduling = new CTimer(scheduler, this, 0, 5000); //Checks if current time matches recalled schedule every 5 seconds
         }
+
+
         private void scheduler(object obj)
             {
                 if (DateTime.Now.Hour == Recalled_Schedule.Hour && DateTime.Now.Minute == Recalled_Schedule.Minute && Schedule_Set)                    
-                        Update(this, new EventArgs());                    
+                        Update(this, new EventArgs());
             }
         }
 }
