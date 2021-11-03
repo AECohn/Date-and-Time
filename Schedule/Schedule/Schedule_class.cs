@@ -9,12 +9,13 @@ namespace Schedule
     public class Schedule_class
     {
         CTimer Scheduling;
-        DateTime Formatted_Schedule;
-        DateTime Recalled_Schedule;
+        Full_Schedule Recalled_Schedule;
         bool Schedule_Set;
-        //public ushort Include_Weekends;
+        public ushort Include_Weekends;
 
         public string filename;
+
+        
 
         private string scheduled_time;
         public string Scheduled_Time
@@ -24,7 +25,8 @@ namespace Schedule
             {
                 if (Schedule_Set)
                 {
-                    return Read_Schedule(); //When the schedule's value is retrieved, it reads the schedule from the file so it can be evaluated by the timer
+                    return Read_Schedule();
+                    //return Read_Schedule(); //When the schedule's value is retrieved, it reads the schedule from the file so it can be evaluated by the timer
                 }
                 else
                 {
@@ -36,13 +38,19 @@ namespace Schedule
                 Schedule_Set = true;
                 try
                 {
-                    Formatted_Schedule = DateTime.Parse(value.ToUpper()); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008 and produces methodnotfound exception) Converting to upper as lowercase pm (and presumably am) is not working properly, despite providing accurate feedback
+                    Full_Schedule Write_Schedule = new Full_Schedule();
+
+
+                    Write_Schedule.SetTime = DateTime.Parse(value.ToUpper());
+                    Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
+
+                    /*Formatted_Schedule = DateTime.Parse(value.ToUpper()); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008 and produces methodnotfound exception) Converting to upper as lowercase pm (and presumably am) is not working properly, despite providing accurate feedback*/
                     using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename))) 
                     {
-                        Schedule_Writer.Write(JsonConvert.SerializeObject(Formatted_Schedule));
+                        Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
                     }
 
-                    scheduled_time = value; // The string gets the value it was input with, when the string is read from it presents the value of the stored time
+                    scheduled_time = value; // The string gets the value it was input with, when the string is read from, it presents the value of the stored time
 
                 }
                 catch
@@ -56,12 +64,15 @@ namespace Schedule
 
         public string Read_Schedule()
         {
+            Recalled_Schedule = new Full_Schedule();
+
              try
             {
                 using (StreamReader Schedule_Reader = new StreamReader(String.Format("{0}{1}.json", "\\user\\", filename)))
                 {
-                    Recalled_Schedule = JsonConvert.DeserializeObject<DateTime>(Schedule_Reader.ReadToEnd());
-                    return Recalled_Schedule.ToString("h:mm tt"); 
+                    Recalled_Schedule = JsonConvert.DeserializeObject<Full_Schedule>(Schedule_Reader.ReadToEnd());
+                    Include_Weekends = Convert.ToUInt16(Recalled_Schedule.Weekends_Included);
+                    return Recalled_Schedule.SetTime.ToString("h:mm tt"); 
                 }
             }
             catch (Exception exception)
@@ -81,9 +92,32 @@ namespace Schedule
 
         private void scheduler(object obj)
             {
-                if (DateTime.Now.Hour == Recalled_Schedule.Hour && DateTime.Now.Minute == Recalled_Schedule.Minute && Schedule_Set)
+
+                if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday) //checks if current day is a weekend
+                {
+                    if (Recalled_Schedule.Weekends_Included)
+                    {
+                        if (DateTime.Now.Hour == Recalled_Schedule.SetTime.Hour && DateTime.Now.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
+                        {
+                            Update(this, new EventArgs());
+                        }
+                    }
+                }
+
+                else //if it's not a weekend  
+                {
+                   if (DateTime.Now.Hour == Recalled_Schedule.SetTime.Hour && DateTime.Now.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
+                    {
                         Update(this, new EventArgs());
+                    }
+                }
             }
         }
+
+    public class Full_Schedule
+    {
+        public DateTime SetTime;
+        public bool Weekends_Included;
+    }
 }
 

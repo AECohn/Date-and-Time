@@ -6,8 +6,8 @@
 
 #User_SimplSharp_Library "Schedule"
 
-Digital_Input _Skip_, Save_Schedule, Recall_Schedule/*, Include_Weekends*/;
-Digital_Output _Skip_, Event_Elapsed;
+Digital_Input _Skip_, Save_Schedule, Recall_Schedule, Include_Weekends;
+Digital_Output _Skip_, Weekends_Included, Event_Elapsed;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
 integer lock;
@@ -17,28 +17,24 @@ string_parameter  Filename[128];
 
 Schedule_class mySchedule;
 
-function Recall_Scheduled_Shutdown()
+function Recall_Scheduled_Event()
   {
+	Weekends_Included = mySchedule.Include_Weekends;
     Event_Feedback = mySchedule.Read_Schedule();
   }
 
-/*Push Include_Weekends
-  {
-    mySchedule.Include_Weekends = 1;
-  }*/
-
-
 Push Recall_Schedule
   {
-    Recall_Scheduled_Shutdown();
+    Recall_Scheduled_Event();
   }
 
 
 
 Push Save_Schedule
   {
+	    mySchedule.Include_Weekends = Include_Weekends;
       myschedule.Scheduled_Time = Event_Input;
-      Event_Feedback = myschedule.Scheduled_Time;
+    	Recall_Scheduled_Event();
   }
                         
 
@@ -59,7 +55,7 @@ function main()
   {
 	mySchedule.filename = Filename;
      RegisterEvent(mySchedule, Update, Event_Callback);
-     Recall_Scheduled_Shutdown();
+     Recall_Scheduled_Event();
   }
 
 
