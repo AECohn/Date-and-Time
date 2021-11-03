@@ -6,11 +6,12 @@
 
 #User_SimplSharp_Library "Schedule"
 
-Digital_Input _Skip_, Save_Schedule, Recall_Schedule;
+Digital_Input _Skip_, Save_Schedule, Recall_Schedule/*, Include_Weekends*/;
 Digital_Output _Skip_, Event_Elapsed;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
 integer lock;
+
 
 string_parameter  Filename[128];
 
@@ -20,6 +21,12 @@ function Recall_Scheduled_Shutdown()
   {
     Event_Feedback = mySchedule.Read_Schedule();
   }
+
+/*Push Include_Weekends
+  {
+    mySchedule.Include_Weekends = 1;
+  }*/
+
 
 Push Recall_Schedule
   {

@@ -6,7 +6,7 @@
 
 Digital_Input PM_Active, Send, Mode_Press[3];
 Digital_Output Active_Mode_FB[3];
-String_Input Settings_Keypad_Input[32];
+String_Input Settings_Input[32];
 String_Output Set_Time, Set_Date, Scheduled_Event;
 integer Active_Mode;
 
@@ -28,18 +28,18 @@ Push Send
 		{
          if(PM_Active)
 			{
-             Set_Time = Settings_Keypad_Input + "PM";
+             Set_Time = Settings_Input + "PM";
 			}
 		 else
 			{
-             Set_Time = Settings_Keypad_Input;
+             Set_Time = Settings_Input;
 			}
             break;
 		}
 
      case (2):
 		{
-			Set_Date = Settings_Keypad_Input;
+			Set_Date = Settings_Input;
             break;
 		}
 
@@ -47,11 +47,11 @@ Push Send
 		{
          if(PM_Active)
 			{
-             Scheduled_Event = Settings_Keypad_Input + "PM";
+             Scheduled_Event = Settings_Input + "PM";
 			}
 		 else
 			{
-             Scheduled_Event = Settings_Keypad_Input;
+             Scheduled_Event = Settings_Input;
 			}
             break;
 		}

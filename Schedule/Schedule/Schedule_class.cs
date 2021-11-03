@@ -12,6 +12,7 @@ namespace Schedule
         DateTime Formatted_Schedule;
         DateTime Recalled_Schedule;
         bool Schedule_Set;
+        //public ushort Include_Weekends;
 
         public string filename;
 
@@ -74,13 +75,13 @@ namespace Schedule
         public event EventHandler Update;
         public Schedule_class()
         {
-            Scheduling = new CTimer(scheduler, this, 0, 5000); //Checks if current time matches recalled schedule every 5 seconds
+            Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
 
         private void scheduler(object obj)
             {
-                if (DateTime.Now.Hour == Recalled_Schedule.Hour && DateTime.Now.Minute == Recalled_Schedule.Minute && Schedule_Set)                    
+                if (DateTime.Now.Hour == Recalled_Schedule.Hour && DateTime.Now.Minute == Recalled_Schedule.Minute && Schedule_Set)
                         Update(this, new EventArgs());
             }
         }
