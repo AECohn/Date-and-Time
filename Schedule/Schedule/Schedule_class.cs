@@ -93,7 +93,7 @@ namespace Schedule
         private void scheduler(object obj)
         {
             DayOfWeek CurrentDay = DateTime.Now.DayOfWeek;
-            string simple_CurrentTime = DateTime.Now.ToShortDateString();
+            string simple_CurrentTime = DateTime.Now.ToShortTimeString();
             bool Is_Weekend = false;
 
             if (CurrentDay == DayOfWeek.Saturday || CurrentDay == DayOfWeek.Sunday)
@@ -103,7 +103,7 @@ namespace Schedule
 
             if (simple_CurrentTime == Recalled_Schedule.Simple_Time)
             {
-                if ((Recalled_Schedule.Weekends_Included && Is_Weekend) || Recalled_Schedule.Weekends_Included == false && Is_Weekend == false)
+                if ((Recalled_Schedule.Weekends_Included && Is_Weekend) || (Recalled_Schedule.Weekends_Included == false && Is_Weekend == false))
                 {
                     Update(this, new EventArgs());
                 }
