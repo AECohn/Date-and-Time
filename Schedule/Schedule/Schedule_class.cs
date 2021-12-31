@@ -3,7 +3,7 @@ using System.Text;
 using Crestron.SimplSharp;
 using Crestron.SimplSharp.CrestronIO;
 using Newtonsoft.Json;
-           				
+
 namespace Schedule
 {
     public class Schedule_class
@@ -15,11 +15,10 @@ namespace Schedule
 
         public string filename;
 
-        
+
 
         private string scheduled_time;
         public string Scheduled_Time
-        
         {
             get
             {
@@ -33,8 +32,8 @@ namespace Schedule
                     return "Invalid Format";
                 }
             }
-            set 
-            { 
+            set
+            {
                 Schedule_Set = true;
                 try
                 {
@@ -42,10 +41,11 @@ namespace Schedule
 
 
                     Write_Schedule.SetTime = DateTime.Parse(value.ToUpper());
+                    Write_Schedule.Simple_Time = Write_Schedule.SetTime.ToShortTimeString();
                     Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
 
                     /*Formatted_Schedule = DateTime.Parse(value.ToUpper()); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008 and produces methodnotfound exception) Converting to upper as lowercase pm (and presumably am) is not working properly, despite providing accurate feedback*/
-                    using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename))) 
+                    using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename)))
                     {
                         Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
                     }
@@ -55,9 +55,9 @@ namespace Schedule
                 }
                 catch
                 {
-                        ErrorLog.Error("Error Setting Schedule");
+                    ErrorLog.Error("Error Setting Schedule");
                     Schedule_Set = false; //if schedule is set incorrectly, the event will not be sent to Simpl+, rather than reporting an error and still maintaining the previous schedule
-                }                   
+                }
             }
 
         }
@@ -66,13 +66,13 @@ namespace Schedule
         {
             Recalled_Schedule = new Full_Schedule();
 
-             try
+            try
             {
                 using (StreamReader Schedule_Reader = new StreamReader(String.Format("{0}{1}.json", "\\user\\", filename)))
                 {
                     Recalled_Schedule = JsonConvert.DeserializeObject<Full_Schedule>(Schedule_Reader.ReadToEnd());
                     Include_Weekends = Convert.ToUInt16(Recalled_Schedule.Weekends_Included);
-                    return Recalled_Schedule.SetTime.ToString("h:mm tt"); 
+                    return Recalled_Schedule.SetTime.ToString("h:mm tt");
                 }
             }
             catch (Exception exception)
@@ -91,34 +91,36 @@ namespace Schedule
 
 
         private void scheduler(object obj)
+        {
+            DayOfWeek CurrentDay = DateTime.Now.DayOfWeek;
+            string simple_CurrentTime = DateTime.Now.ToShortDateString();
+            bool Is_Weekend = false;
+
+            if (CurrentDay == DayOfWeek.Saturday || CurrentDay == DayOfWeek.Sunday)
             {
-                DateTime CurrentTime = DateTime.Now;
+                Is_Weekend = true;
+            }
 
-                if (CurrentTime.DayOfWeek == DayOfWeek.Saturday || CurrentTime.DayOfWeek == DayOfWeek.Sunday) //checks if current day is a weekend
+            if (simple_CurrentTime == Recalled_Schedule.Simple_Time)
+            {
+                if ((Recalled_Schedule.Weekends_Included && Is_Weekend) || Recalled_Schedule.Weekends_Included == false && Is_Weekend == false)
                 {
-                    if (Recalled_Schedule.Weekends_Included)
-                    {
-                        if (CurrentTime.Hour == Recalled_Schedule.SetTime.Hour && CurrentTime.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
-                        {
-                            Update(this, new EventArgs());
-                        }
-                    }
-                }
-
-                else //if it's not a weekend  
-                {
-                    if (CurrentTime.Hour == Recalled_Schedule.SetTime.Hour && CurrentTime.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
-                    {
-                        Update(this, new EventArgs());
-                    }
+                    Update(this, new EventArgs());
                 }
             }
+
+
+
+
+
         }
 
-    public class Full_Schedule
-    {
-        public DateTime SetTime;
-        public bool Weekends_Included;
+        public class Full_Schedule
+        {
+            public DateTime SetTime;
+            public string Simple_Time;
+            public bool Weekends_Included;
+        }
     }
 }
 
