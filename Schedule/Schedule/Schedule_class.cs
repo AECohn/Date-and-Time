@@ -25,7 +25,6 @@ namespace Schedule
                 if (Schedule_Set)
                 {
                     return Read_Schedule();
-                    //return Read_Schedule(); //When the schedule's value is retrieved, it reads the schedule from the file so it can be evaluated by the timer
                 }
                 else
                 {
@@ -44,7 +43,6 @@ namespace Schedule
                     Write_Schedule.Simple_Time = Write_Schedule.SetTime.ToShortTimeString();
                     Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
 
-                    /*Formatted_Schedule = DateTime.Parse(value.ToUpper()); //JsonWriter should not engage if DateTime.Parse fails (TryParse is not available in VS 2008 and produces methodnotfound exception) Converting to upper as lowercase pm (and presumably am) is not working properly, despite providing accurate feedback*/
                     using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename)))
                     {
                         Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
@@ -108,10 +106,6 @@ namespace Schedule
                     Update(this, new EventArgs());
                 }
             }
-
-
-
-
 
         }
 

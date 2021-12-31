@@ -6,7 +6,7 @@
 
 #User_SimplSharp_Library "Schedule"
 
-Digital_Input _Skip_, Save_Schedule, Recall_Schedule, Include_Weekends;
+Digital_Input _Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Shutdown;
 Digital_Output _Skip_, Weekends_Included, Event_Elapsed;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
