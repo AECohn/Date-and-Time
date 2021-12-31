@@ -12,7 +12,7 @@ namespace Schedule
         Full_Schedule Recalled_Schedule;
         bool Schedule_Set;
         public ushort Include_Weekends;
-        DateTime Delayed_Schedule;
+        Full_Schedule Delayed_Schedule = new Full_Schedule();
         bool Event_Delayed;
 
         public string filename;
@@ -91,12 +91,13 @@ namespace Schedule
         {
             if (Event_Delayed)
             {
-                Delayed_Schedule = Delayed_Schedule.AddMinutes(Convert.ToDouble(Minutes_Delayed));
-
+                Delayed_Schedule.SetTime = Delayed_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
             }
             else
             {
-                Delayed_Schedule = Recalled_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
+                Delayed_Schedule.SetTime = Recalled_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
+                Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
+                Delayed_Schedule.Weekends_Included = Recalled_Schedule.Weekends_Included;
             }
             Event_Delayed = true;
         }
@@ -113,12 +114,12 @@ namespace Schedule
             }
 
 
-
-            if (simple_CurrentTime == Recalled_Schedule.Simple_Time)
+            if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
             {
-                if ((Recalled_Schedule.Weekends_Included && Is_Weekend) || (Recalled_Schedule.Weekends_Included == false && Is_Weekend == false))
+                if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
                 {
                     Update(this, new EventArgs());
+                    Event_Delayed = false;
                 }
             }
         }
@@ -126,7 +127,14 @@ namespace Schedule
 
         private void scheduler(object obj)
         {
-
+            if (Event_Delayed)
+            {
+                Schedule_Checker(Delayed_Schedule);
+            }
+            else
+            {
+                Schedule_Checker(Recalled_Schedule);
+            }
             
 
         }

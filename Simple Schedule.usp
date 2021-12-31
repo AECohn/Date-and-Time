@@ -6,7 +6,7 @@
 
 #User_SimplSharp_Library "Schedule"
 
-Digital_Input _Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Shutdown;
+Digital_Input _Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event;
 Digital_Output _Skip_, Weekends_Included, Event_Elapsed;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
@@ -22,6 +22,12 @@ function Recall_Scheduled_Event()
 	Weekends_Included = mySchedule.Include_Weekends;
     Event_Feedback = mySchedule.Read_Schedule();
   }
+
+Push Delay_Scheduled_Event
+	{
+        mySchedule.Delay_Schedule(1);
+	}
+	
 
 Push Recall_Schedule
   {
