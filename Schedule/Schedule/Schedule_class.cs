@@ -12,10 +12,10 @@ namespace Schedule
         Full_Schedule Recalled_Schedule;
         bool Schedule_Set;
         public ushort Include_Weekends;
+        DateTime Delayed_Schedule;
+        bool Event_Delayed;
 
         public string filename;
-
-
 
         private string scheduled_time;
         public string Scheduled_Time
@@ -87,8 +87,21 @@ namespace Schedule
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
+        public void Delay_Schedule(ushort Minutes_Delayed)
+        {
+            if (Event_Delayed)
+            {
+                Delayed_Schedule = Delayed_Schedule.AddMinutes(Convert.ToDouble(Minutes_Delayed));
 
-        private void scheduler(object obj)
+            }
+            else
+            {
+                Delayed_Schedule = Recalled_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
+            }
+            Event_Delayed = true;
+        }
+
+        private void Schedule_Checker(Full_Schedule Schedule_To_Check)
         {
             DayOfWeek CurrentDay = DateTime.Now.DayOfWeek;
             string simple_CurrentTime = DateTime.Now.ToShortTimeString();
@@ -99,6 +112,8 @@ namespace Schedule
                 Is_Weekend = true;
             }
 
+
+
             if (simple_CurrentTime == Recalled_Schedule.Simple_Time)
             {
                 if ((Recalled_Schedule.Weekends_Included && Is_Weekend) || (Recalled_Schedule.Weekends_Included == false && Is_Weekend == false))
@@ -106,6 +121,13 @@ namespace Schedule
                     Update(this, new EventArgs());
                 }
             }
+        }
+
+
+        private void scheduler(object obj)
+        {
+
+            
 
         }
 
