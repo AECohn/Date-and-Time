@@ -92,12 +92,13 @@ namespace Schedule
 
         private void scheduler(object obj)
             {
+                DateTime CurrentTime = DateTime.Now;
 
-                if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday) //checks if current day is a weekend
+                if (CurrentTime.DayOfWeek == DayOfWeek.Saturday || CurrentTime.DayOfWeek == DayOfWeek.Sunday) //checks if current day is a weekend
                 {
                     if (Recalled_Schedule.Weekends_Included)
                     {
-                        if (DateTime.Now.Hour == Recalled_Schedule.SetTime.Hour && DateTime.Now.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
+                        if (CurrentTime.Hour == Recalled_Schedule.SetTime.Hour && CurrentTime.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
                         {
                             Update(this, new EventArgs());
                         }
@@ -106,7 +107,7 @@ namespace Schedule
 
                 else //if it's not a weekend  
                 {
-                   if (DateTime.Now.Hour == Recalled_Schedule.SetTime.Hour && DateTime.Now.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
+                    if (CurrentTime.Hour == Recalled_Schedule.SetTime.Hour && CurrentTime.Minute == Recalled_Schedule.SetTime.Minute && Schedule_Set)
                     {
                         Update(this, new EventArgs());
                     }
