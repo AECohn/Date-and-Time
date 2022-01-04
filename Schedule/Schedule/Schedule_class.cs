@@ -117,7 +117,7 @@ namespace Schedule
                 Is_Weekend = true;
             }
 
-
+            CrestronConsole.PrintLine(string.Format("Current Time is {0}, Checked Time is {1}", simple_CurrentTime, Schedule_To_Check.Simple_Time)); 
             if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
             {
                 if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
@@ -142,10 +142,13 @@ namespace Schedule
             if (Event_Delayed)
             {
                 Schedule_Checker(Delayed_Schedule);
+                CrestronConsole.PrintLine("checking delayed schedule");
             }
             else
             {
                 Schedule_Checker(Recalled_Schedule);
+                CrestronConsole.PrintLine("checking saved schedule");
+
             }
             
 
