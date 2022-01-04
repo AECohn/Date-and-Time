@@ -87,7 +87,7 @@ namespace Schedule
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
-        public void Delay_Schedule(ushort Minutes_Delayed)
+        public string Delay_Schedule(ushort Minutes_Delayed)
         {
             if (Event_Delayed)
             {
@@ -100,6 +100,8 @@ namespace Schedule
                 Delayed_Schedule.Weekends_Included = Recalled_Schedule.Weekends_Included;
             }
             Event_Delayed = true;
+            return Delayed_Schedule.SetTime.ToString("h:mm tt");
+
         }
 
         private void Schedule_Checker(Full_Schedule Schedule_To_Check)
