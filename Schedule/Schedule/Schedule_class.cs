@@ -83,6 +83,7 @@ namespace Schedule
         }
 
         public event EventHandler Update;
+        public event EventHandler Warning;
         public Schedule_class()
         {
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
@@ -126,6 +127,12 @@ namespace Schedule
                     Delayed_Schedule = new Full_Schedule();; //Clears Delayed_Schedule when event elapses
 
                 }
+            }
+            var Warning_Time = Schedule_To_Check.SetTime.AddMinutes(-15);
+
+            if (simple_CurrentTime == Warning_Time.ToShortTimeString())
+            {
+                Warning(this, new EventArgs());
             }
         }
 

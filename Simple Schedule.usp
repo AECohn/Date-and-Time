@@ -44,7 +44,7 @@ Push Save_Schedule
   }
                         
 
- eventhandler Event_Callback(Schedule_class sender, EventArgs e)
+ eventhandler Scheduled_Event_Callback(Schedule_class sender, EventArgs e)
   {
      if(lock = off)
   		{
@@ -60,7 +60,7 @@ Push Save_Schedule
 function main()
   {
 	mySchedule.filename = Filename;
-     RegisterEvent(mySchedule, Update, Event_Callback);
+     RegisterEvent(mySchedule, Update, Scheduled_Event_Callback);
      Recall_Scheduled_Event();
   }
 
