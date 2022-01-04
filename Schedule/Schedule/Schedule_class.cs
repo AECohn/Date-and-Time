@@ -49,7 +49,8 @@ namespace Schedule
                     }
 
                     scheduled_time = value; // The string gets the value it was input with, when the string is read from, it presents the value of the stored time
-
+                    Delayed_Schedule = new Full_Schedule();; //Clears Delayed_Schedule if a new Scheduled Time is set
+                    Event_Delayed = false;
                 }
                 catch
                 {
@@ -122,6 +123,8 @@ namespace Schedule
                 {
                     Update(this, new EventArgs());
                     Event_Delayed = false;
+                    Delayed_Schedule = new Full_Schedule();; //Clears Delayed_Schedule when event elapses
+
                 }
             }
         }
