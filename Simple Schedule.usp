@@ -6,11 +6,17 @@
 
 #User_SimplSharp_Library "Schedule"
 
-Digital_Input _Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event;
-Digital_Output _Skip_, Weekends_Included, Event_Elapsed, Show_Warning;
+Digital_Input _Skip_,_Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event;
+Digital_Output _Skip_,_Skip_, Weekends_Included, Event_Elapsed, Show_Warning;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
 integer lock;
+
+Integer_Parameter Delay_Time_In_Minutes;
+#Begin_Parameter_Properties Delay_Time_In_Minutes
+propValidUnits = unitDecimal;
+propBounds= 15d , 120d;
+#End_Parameter_Properties
 
 
 string_parameter  Filename[128];
@@ -25,7 +31,7 @@ function Recall_Scheduled_Event()
 
 Push Delay_Scheduled_Event
 	{
-        Event_Feedback = mySchedule.Delay_Schedule(1);
+        Event_Feedback = mySchedule.Delay_Schedule(Delay_Time_In_Minutes);
 	}
 	
 
