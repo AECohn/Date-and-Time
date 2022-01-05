@@ -40,7 +40,7 @@ namespace Schedule
 
 
                     Write_Schedule.SetTime = DateTime.Parse(value.ToUpper());
-                    Write_Schedule.Simple_Time = Write_Schedule.SetTime.ToShortTimeString();
+                    //Write_Schedule.Simple_Time = Write_Schedule.SetTime.ToShortTimeString();
                     Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
 
                     using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename)))
@@ -94,7 +94,7 @@ namespace Schedule
             if (Event_Delayed)
             {
                 Delayed_Schedule.SetTime = Delayed_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
-                Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
+                //Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
                 CrestronConsole.PrintLine(Delayed_Schedule.SetTime.ToString());
                 CrestronConsole.PrintLine(Delayed_Schedule.Simple_Time);
 
@@ -103,7 +103,7 @@ namespace Schedule
             else
             {
                 Delayed_Schedule.SetTime = Recalled_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
-                Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
+                //Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
                 Delayed_Schedule.Weekends_Included = Recalled_Schedule.Weekends_Included;
             }
             Event_Delayed = true;
@@ -161,7 +161,20 @@ namespace Schedule
 
         public class Full_Schedule
         {
-            public DateTime SetTime;
+            private DateTime _setTime;
+            public DateTime SetTime
+            {
+                get
+                {
+                    return _setTime;
+                }
+
+                set
+                {
+                    _setTime = value;
+                    Simple_Time = _setTime.ToShortTimeString();
+                }
+            }
             public string Simple_Time;
             public bool Weekends_Included;
         }
