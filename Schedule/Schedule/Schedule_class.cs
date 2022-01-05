@@ -45,7 +45,7 @@ namespace Schedule
                     }
 
                     scheduled_time = value; // The string gets the value it was input with, when the string is read from, it presents the value of the stored time
-                    Delayed_Schedule = new Full_Schedule();; //Clears Delayed_Schedule if a new Scheduled Time is set
+                    Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule if a new Scheduled Time is set
                     Event_Delayed = false;
                 }
                 catch
@@ -87,7 +87,7 @@ namespace Schedule
         public string Delay_Schedule(ushort Minutes_Delayed)
         {
             if (Event_Delayed)
-           {
+            {
                 Delayed_Schedule.SetTime = Delayed_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
             }
             else
@@ -110,15 +110,16 @@ namespace Schedule
             {
                 Is_Weekend = true;
             }
-
-            if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
+            if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
             {
-                if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
+                if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
                 {
-                    Update(this, new EventArgs());
-                    Event_Delayed = false;
-                    Delayed_Schedule = new Full_Schedule();; //Clears Delayed_Schedule when event elapses
+                    {
+                        Update(this, new EventArgs());
+                        Event_Delayed = false;
+                        Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
 
+                    }
                 }
             }
 
@@ -139,7 +140,7 @@ namespace Schedule
             {
                 Schedule_Checker(Recalled_Schedule);
             }
-            
+
 
         }
 
