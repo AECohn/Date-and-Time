@@ -10,11 +10,9 @@ namespace Schedule
     {
         CTimer Scheduling;
         Full_Schedule Recalled_Schedule;
-        bool Schedule_Set;
-        public ushort Include_Weekends;
         Full_Schedule Delayed_Schedule = new Full_Schedule();
-        bool Event_Delayed;
-
+        bool Schedule_Set, Event_Delayed;
+        public ushort Include_Weekends;
         public string filename;
 
         private string scheduled_time;
@@ -22,13 +20,13 @@ namespace Schedule
         {
             get
             {
-                if (Schedule_Set)
-                {
+                if (Schedule_Set) 
+                { 
                     return Read_Schedule();
                 }
-                else
-                {
-                    return "Invalid Format";
+                else 
+                { 
+                    return "Invalid Format"; 
                 }
             }
             set
@@ -38,9 +36,7 @@ namespace Schedule
                 {
                     Full_Schedule Write_Schedule = new Full_Schedule();
 
-
                     Write_Schedule.SetTime = DateTime.Parse(value.ToUpper());
-                    //Write_Schedule.Simple_Time = Write_Schedule.SetTime.ToShortTimeString();
                     Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
 
                     using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename)))
@@ -64,7 +60,6 @@ namespace Schedule
         public string Read_Schedule()
         {
             Recalled_Schedule = new Full_Schedule();
-
             try
             {
                 using (StreamReader Schedule_Reader = new StreamReader(String.Format("{0}{1}.json", "\\user\\", filename)))
@@ -92,18 +87,12 @@ namespace Schedule
         public string Delay_Schedule(ushort Minutes_Delayed)
         {
             if (Event_Delayed)
-            {
+           {
                 Delayed_Schedule.SetTime = Delayed_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
-                //Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
-                CrestronConsole.PrintLine(Delayed_Schedule.SetTime.ToString());
-                CrestronConsole.PrintLine(Delayed_Schedule.Simple_Time);
-
-
             }
             else
             {
                 Delayed_Schedule.SetTime = Recalled_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
-                //Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
                 Delayed_Schedule.Weekends_Included = Recalled_Schedule.Weekends_Included;
             }
             Event_Delayed = true;
@@ -122,7 +111,6 @@ namespace Schedule
                 Is_Weekend = true;
             }
 
-            CrestronConsole.PrintLine(string.Format("Current Time is {0}, Checked Time is {1}", simple_CurrentTime, Schedule_To_Check.Simple_Time)); 
             if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
             {
                 if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
@@ -147,13 +135,10 @@ namespace Schedule
             if (Event_Delayed)
             {
                 Schedule_Checker(Delayed_Schedule);
-                CrestronConsole.PrintLine("checking delayed schedule");
             }
             else
             {
                 Schedule_Checker(Recalled_Schedule);
-                CrestronConsole.PrintLine("checking saved schedule");
-
             }
             
 
