@@ -11,9 +11,16 @@ namespace Schedule
         CTimer Scheduling;
         Full_Schedule Recalled_Schedule;
         Full_Schedule Delayed_Schedule = new Full_Schedule();
-        bool Schedule_Set, Event_Delayed;
+        bool Schedule_Set;
+        bool Event_Delayed = false;
         public ushort Include_Weekends;
         public string filename;
+
+
+        public void Init()
+        {
+            Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
+        }
 
         private string scheduled_time;
         public string Scheduled_Time
@@ -56,7 +63,7 @@ namespace Schedule
             }
 
         }
-
+       
         public string Read_Schedule()
         {
             Recalled_Schedule = new Full_Schedule();
@@ -79,11 +86,7 @@ namespace Schedule
 
         public event EventHandler Update;
         public event EventHandler Warning;
-        public Schedule_class()
-        {
-            Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
-        }
-
+        
         public string Delay_Schedule(ushort Minutes_Delayed)
         {
             if (Event_Delayed)
