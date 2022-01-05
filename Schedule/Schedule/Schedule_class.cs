@@ -121,9 +121,8 @@ namespace Schedule
 
                 }
             }
-            var Warning_Time = Schedule_To_Check.SetTime.AddMinutes(-15);
 
-            if (simple_CurrentTime == Warning_Time.ToShortTimeString())
+            if (simple_CurrentTime == Schedule_To_Check.Warning_Time)
             {
                 Warning(this, new EventArgs());
             }
@@ -146,6 +145,7 @@ namespace Schedule
 
         public class Full_Schedule
         {
+            public string Warning_Time;
             private DateTime _setTime;
             public DateTime SetTime
             {
@@ -158,6 +158,7 @@ namespace Schedule
                 {
                     _setTime = value;
                     Simple_Time = _setTime.ToShortTimeString();
+                    Warning_Time = _setTime.AddMinutes(-15).ToShortTimeString();
                 }
             }
             public string Simple_Time;
