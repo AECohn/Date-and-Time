@@ -58,10 +58,17 @@ Push Save_Schedule
   }
 
 eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
-	{           
-		Pulse(500, Show_Warning); 
-	}
-
+  {
+     if(lock = off)
+  		{
+      	Pulse(0, Show_Warning);
+  			lock = on;
+  			wait(6000) //wait 1 minute
+  			{
+                   lock = off;
+  			}
+  		}	
+  }
 function main()
   {
 	mySchedule.filename = Filename;
