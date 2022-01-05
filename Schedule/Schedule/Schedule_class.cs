@@ -113,20 +113,19 @@ namespace Schedule
             if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
             {
                 if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
-                {
-                    {
+                {                   
                         Update(this, new EventArgs());
                         Event_Delayed = false;
                         Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
+                }
 
-                    }
+                else if (simple_CurrentTime == Schedule_To_Check.Warning_Time)
+                {
+                    Warning(this, new EventArgs());
                 }
             }
 
-            if (simple_CurrentTime == Schedule_To_Check.Warning_Time)
-            {
-                Warning(this, new EventArgs());
-            }
+           
         }
 
 
