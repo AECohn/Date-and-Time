@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Crestron.SimplSharp;
 using Crestron.SimplSharp.CrestronIO;
 using Newtonsoft.Json;
@@ -8,22 +7,20 @@ namespace Schedule
 {
     public class Schedule_class
     {
-        CTimer Scheduling;
-        Full_Schedule Recalled_Schedule;
-        Full_Schedule Delayed_Schedule = new Full_Schedule();
-        bool Schedule_Set;
-        bool Event_Delayed = false;
+        private CTimer Scheduling;
+        private Full_Schedule Recalled_Schedule;
+        private Full_Schedule Delayed_Schedule = new Full_Schedule();
+        private bool Schedule_Set;
+        private bool Event_Delayed = false;
         public ushort Include_Weekends;
         public string filename;
-
 
         public void Init()
         {
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
-
-        public string Scheduled_Time (string Input_Time)
+        public string Scheduled_Time(string Input_Time)
         {
             Schedule_Set = true;
             try
@@ -38,7 +35,6 @@ namespace Schedule
                     Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
                 }
 
-                //scheduled_time = value; // The string gets the value it was input with, when the string is read from, it presents the value of the stored time
                 Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule if a new Scheduled Time is set
                 Event_Delayed = false;
             }
@@ -47,58 +43,16 @@ namespace Schedule
                 ErrorLog.Error("Error Setting Schedule");
                 Schedule_Set = false; //if schedule is set incorrectly, the event will not be sent to Simpl+, rather than reporting an error and still maintaining the previous schedule
             }
-            if (Schedule_Set) 
-                { 
-                    return Read_Schedule();
-                }
-                else 
-                { 
-                    return "Invalid Format"; 
-                }
-
+            if (Schedule_Set)
+            {
+                return Read_Schedule();
+            }
+            else
+            {
+                return "Invalid Format";
+            }
         }
-        /*private string scheduled_time;
-        public string Scheduled_Time
-        {
-            get
-            {
-                if (Schedule_Set) 
-                { 
-                    return Read_Schedule();
-                }
-                else 
-                { 
-                    return "Invalid Format"; 
-                }
-            }
-            set
-            {
-                Schedule_Set = true;
-                try
-                {
-                    Full_Schedule Write_Schedule = new Full_Schedule();
 
-                    Write_Schedule.SetTime = DateTime.Parse(value.ToUpper());
-                    Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
-
-                    using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename)))
-                    {
-                        Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
-                    }
-
-                    scheduled_time = value; // The string gets the value it was input with, when the string is read from, it presents the value of the stored time
-                    Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule if a new Scheduled Time is set
-                    Event_Delayed = false;
-                }
-                catch
-                {
-                    ErrorLog.Error("Error Setting Schedule");
-                    Schedule_Set = false; //if schedule is set incorrectly, the event will not be sent to Simpl+, rather than reporting an error and still maintaining the previous schedule
-                }
-            }
-
-        }*/
-       
         public string Read_Schedule()
         {
             Recalled_Schedule = new Full_Schedule();
@@ -116,12 +70,12 @@ namespace Schedule
                 ErrorLog.Error(exception.Message);
                 return "Read_Error"; //if Schedule Set is True, but there is an issue reading the file
             }
-
         }
 
         public event EventHandler Update;
+
         public event EventHandler Warning;
-        
+
         public string Delay_Schedule(ushort Minutes_Delayed)
         {
             if (Event_Delayed)
@@ -135,7 +89,6 @@ namespace Schedule
             }
             Event_Delayed = true;
             return Delayed_Schedule.SetTime.ToString("h:mm tt");
-
         }
 
         private void Schedule_Checker(Full_Schedule Schedule_To_Check)
@@ -151,21 +104,17 @@ namespace Schedule
             if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
             {
                 if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
-                {                   
-                        Update(this, new EventArgs());
-                        Event_Delayed = false;
-                        Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
+                {
+                    Update(this, new EventArgs());
+                    Event_Delayed = false;
+                    Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
                 }
-
                 else if (simple_CurrentTime == Schedule_To_Check.Warning_Time)
                 {
                     Warning(this, new EventArgs());
                 }
             }
-
-           
         }
-
 
         private void scheduler(object obj)
         {
@@ -177,14 +126,13 @@ namespace Schedule
             {
                 Schedule_Checker(Recalled_Schedule);
             }
-
-
         }
 
         public class Full_Schedule
         {
             public string Warning_Time;
             private DateTime _setTime;
+
             public DateTime SetTime
             {
                 get
@@ -199,9 +147,9 @@ namespace Schedule
                     Warning_Time = _setTime.AddMinutes(-15).ToShortTimeString();
                 }
             }
+
             public string Simple_Time;
             public bool Weekends_Included;
         }
     }
 }
-
