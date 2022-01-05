@@ -94,6 +94,11 @@ namespace Schedule
             if (Event_Delayed)
             {
                 Delayed_Schedule.SetTime = Delayed_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
+                Delayed_Schedule.Simple_Time = Delayed_Schedule.SetTime.ToShortTimeString();
+                CrestronConsole.PrintLine(Delayed_Schedule.SetTime.ToString());
+                CrestronConsole.PrintLine(Delayed_Schedule.Simple_Time);
+
+
             }
             else
             {
