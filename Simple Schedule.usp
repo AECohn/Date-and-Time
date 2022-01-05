@@ -7,7 +7,7 @@
 #User_SimplSharp_Library "Schedule"
 
 Digital_Input _Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event;
-Digital_Output _Skip_, Weekends_Included, Event_Elapsed;
+Digital_Output _Skip_, Weekends_Included, Event_Elapsed, Show_Warning;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
 integer lock;
@@ -57,10 +57,16 @@ Push Save_Schedule
   		}	
   }
 
+eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
+	{           
+		Pulse(500, Show_Warning); 
+	}
+
 function main()
   {
 	mySchedule.filename = Filename;
      RegisterEvent(mySchedule, Update, Scheduled_Event_Callback);
+	RegisterEvent(mySchedule, Warning, Warning_Callback);
      Recall_Scheduled_Event();
   }
 
