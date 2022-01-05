@@ -22,7 +22,42 @@ namespace Schedule
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
-        private string scheduled_time;
+
+        public string Scheduled_Time (string Input_Time)
+        {
+            Schedule_Set = true;
+            try
+            {
+                Full_Schedule Write_Schedule = new Full_Schedule();
+
+                Write_Schedule.SetTime = DateTime.Parse(Input_Time.ToUpper());
+                Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
+
+                using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename)))
+                {
+                    Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
+                }
+
+                //scheduled_time = value; // The string gets the value it was input with, when the string is read from, it presents the value of the stored time
+                Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule if a new Scheduled Time is set
+                Event_Delayed = false;
+            }
+            catch
+            {
+                ErrorLog.Error("Error Setting Schedule");
+                Schedule_Set = false; //if schedule is set incorrectly, the event will not be sent to Simpl+, rather than reporting an error and still maintaining the previous schedule
+            }
+            if (Schedule_Set) 
+                { 
+                    return Read_Schedule();
+                }
+                else 
+                { 
+                    return "Invalid Format"; 
+                }
+
+        }
+        /*private string scheduled_time;
         public string Scheduled_Time
         {
             get
@@ -62,7 +97,7 @@ namespace Schedule
                 }
             }
 
-        }
+        }*/
        
         public string Read_Schedule()
         {

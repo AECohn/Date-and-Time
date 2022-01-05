@@ -46,8 +46,8 @@ Push Recall_Schedule
 Push Save_Schedule
   {
 	    mySchedule.Include_Weekends = Include_Weekends;
-      myschedule.Scheduled_Time = Event_Input;
-    	Recall_Scheduled_Event();
+      Event_Feedback = myschedule.Scheduled_Time (Event_Input);
+    	//Recall_Scheduled_Event();
   }
                         
 
