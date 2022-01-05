@@ -10,19 +10,16 @@ namespace Schedule
         private CTimer Scheduling;
         private Full_Schedule Recalled_Schedule;
         private Full_Schedule Delayed_Schedule = new Full_Schedule();
-        private bool Schedule_Set;
         private bool Event_Delayed = false;
         public ushort Include_Weekends;
-        public string filename;
 
         public void Init()
         {
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
-        public string Scheduled_Time(string Input_Time)
+        public string Scheduled_Time(string Input_Time, string filename)
         {
-            Schedule_Set = true;
             try
             {
                 Full_Schedule Write_Schedule = new Full_Schedule();
@@ -37,23 +34,16 @@ namespace Schedule
 
                 Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule if a new Scheduled Time is set
                 Event_Delayed = false;
+                return ("Schedule set");
             }
             catch
             {
-                ErrorLog.Error("Error Setting Schedule");
-                Schedule_Set = false; //if schedule is set incorrectly, the event will not be sent to Simpl+, rather than reporting an error and still maintaining the previous schedule
-            }
-            if (Schedule_Set)
-            {
-                return Read_Schedule();
-            }
-            else
-            {
-                return "Invalid Format";
-            }
+                ErrorLog.Error("Error setting schedule");
+                return ("Error setting schedule");
+            }           
         }
 
-        public string Read_Schedule()
+        public string Read_Schedule(string filename)
         {
             Recalled_Schedule = new Full_Schedule();
             try

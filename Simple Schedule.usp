@@ -26,8 +26,9 @@ Schedule_class mySchedule;
 
 function Recall_Scheduled_Event()
   {
+    Event_Feedback = mySchedule.Read_Schedule(Filename);
 	Weekends_Included = mySchedule.Include_Weekends;
-    Event_Feedback = mySchedule.Read_Schedule();
+
   }
 
 Push Delay_Scheduled_Event
@@ -46,8 +47,8 @@ Push Recall_Schedule
 Push Save_Schedule
   {
 	    mySchedule.Include_Weekends = Include_Weekends;
-      Event_Feedback = myschedule.Scheduled_Time (Event_Input);
-    	//Recall_Scheduled_Event();
+        Event_Feedback = myschedule.Scheduled_Time (Event_Input, Filename);
+
   }
                         
 
@@ -78,10 +79,8 @@ eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   }
 function main()
   {
-	mySchedule.filename = Filename;
      RegisterEvent(mySchedule, Update, Scheduled_Event_Callback);
 	RegisterEvent(mySchedule, Warning, Warning_Callback);
     Recall_Scheduled_Event();
 	mySchedule.Init();
-
   }
