@@ -95,7 +95,8 @@ namespace Schedule
             {
                 Is_Weekend = true;
             }
-            if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
+            //if ((Schedule_To_Check.Weekends_Included && Is_Weekend) || (Schedule_To_Check.Weekends_Included == false && Is_Weekend == false))
+            if (!(Schedule_To_Check.Weekends_Included == false && Is_Weekend) ) // would only not work if weekends aren't included and it is a weekend 
             {
                 if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
                 {
