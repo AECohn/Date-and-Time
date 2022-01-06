@@ -84,7 +84,8 @@ namespace Schedule
                 Delayed_Schedule.Weekends_Included = Recalled_Schedule.Weekends_Included;
             }
             Event_Delayed = true;
-            return Delayed_Schedule.SetTime.ToString("h:mm tt");
+            //return Delayed_Schedule.SetTime.ToString("h:mm tt");
+            return TimeToString(Delayed_Schedule.SetTime);
         }
 
         private void Schedule_Checker(Full_Schedule Schedule_To_Check)
