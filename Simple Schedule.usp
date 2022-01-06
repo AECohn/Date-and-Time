@@ -63,7 +63,7 @@ Change Event_Input
   		{
       	Pulse(0, Event_Elapsed);
   			schedule_lock = on;
-  			wait(1000) //wait ten seconds
+  			wait(6000) //wait ten seconds
   			{
                    schedule_lock = off;
   				}
@@ -76,7 +76,7 @@ eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   		{
       	Pulse(0, Show_Warning);
   			warning_lock = on;
-  			wait(1000) //wait ten seconds  			{
+  			wait(6000) //wait 60 seconds  			{
                    warning_lock = off;
   			
   		}	
