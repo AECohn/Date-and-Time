@@ -12,7 +12,7 @@ namespace Schedule
         private Full_Schedule Delayed_Schedule = new Full_Schedule();
         private bool Event_Delayed = false;
         //public ushort Include_Weekends;
-        static Func<DateTime, String> TimeToString = x => x.ToString("h:mm tt");
+        static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
 
         public void Init()
         {
