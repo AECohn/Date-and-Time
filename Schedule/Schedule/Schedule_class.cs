@@ -11,7 +11,7 @@ namespace Schedule
         private Full_Schedule Recalled_Schedule;
         private Full_Schedule Delayed_Schedule = new Full_Schedule();
         private bool Event_Delayed = false;
-        public ushort Include_Weekends;
+        //public ushort Include_Weekends;
         static Func<DateTime, String> TimeToString = x => x.ToShortTimeString();
 
         public void Init()
@@ -19,7 +19,7 @@ namespace Schedule
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
-        public string Scheduled_Time(string Input_Time, string filename)
+        public string Scheduled_Time(string Input_Time, string filename, ushort Include_Weekends)
         {
             try
             {
@@ -52,8 +52,13 @@ namespace Schedule
                 using (StreamReader Schedule_Reader = new StreamReader(String.Format("{0}{1}.json", "\\user\\", filename)))
                 {
                     Recalled_Schedule = JsonConvert.DeserializeObject<Full_Schedule>(Schedule_Reader.ReadToEnd());
-                    Include_Weekends = Convert.ToUInt16(Recalled_Schedule.Weekends_Included);
-                    return Recalled_Schedule.SetTime.ToString("h:mm tt");
+                    //Include_Weekends = Convert.ToUInt16(Recalled_Schedule.Weekends_Included);
+                    //return Recalled_Schedule.SetTime.ToString("h:mm tt");
+                    //return Recalled_Schedule.Simple_Time
+                    if (Recalled_Schedule.Weekends_Included)
+                        return (Recalled_Schedule.Simple_Time + " Weekends included");
+                    else
+                        return (Recalled_Schedule.Simple_Time + " Weekends not included");
                 }
             }
             catch (Exception exception)
