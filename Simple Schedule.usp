@@ -58,7 +58,7 @@ Push Save_Schedule
   		{
       	Pulse(0, Event_Elapsed);
   			schedule_lock = on;
-  			wait(6000) //wait 1 minute
+  			wait(1000) //wait ten seconds
   			{
                    schedule_lock = off;
   				}
@@ -71,12 +71,12 @@ eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   		{
       	Pulse(0, Show_Warning);
   			warning_lock = on;
-  			wait(6000) //wait 1 minute
-  			{
+  			wait(1000) //wait ten seconds  			{
                    warning_lock = off;
-  			}
+  			
   		}	
   }
+
 function main()
   {
      RegisterEvent(mySchedule, Update, Scheduled_Event_Callback);

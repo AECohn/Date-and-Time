@@ -12,6 +12,7 @@ namespace Schedule
         private Full_Schedule Delayed_Schedule = new Full_Schedule();
         private bool Event_Delayed = false;
         public ushort Include_Weekends;
+        static Func<DateTime, String> TimeToString = x => x.ToShortTimeString();
 
         public void Init()
         {
@@ -84,7 +85,8 @@ namespace Schedule
         private void Schedule_Checker(Full_Schedule Schedule_To_Check)
         {
             DayOfWeek CurrentDay = DateTime.Now.DayOfWeek;
-            string simple_CurrentTime = DateTime.Now.ToShortTimeString();
+            //string simple_CurrentTime = DateTime.Now.ToShortTimeString();
+            string simple_CurrentTime = TimeToString(DateTime.Now);
             bool Is_Weekend = false;
 
             CrestronConsole.PrintLine("simple_CurrentTime = {0}, Schedule_To_Check.Simple_Time = {1}", simple_CurrentTime, Schedule_To_Check.Simple_Time);
@@ -136,8 +138,10 @@ namespace Schedule
                 set
                 {
                     _setTime = value;
-                    Simple_Time = _setTime.ToShortTimeString();
-                    Warning_Time = _setTime.AddMinutes(-15).ToShortTimeString();
+                    /*Simple_Time = _setTime.ToShortTimeString();
+                    Warning_Time = _setTime.AddMinutes(-15).ToShortTimeString();*/
+                    Simple_Time = TimeToString(SetTime);
+                    Warning_Time = TimeToString(SetTime.AddMinutes(-15));
                 }
             }
 
