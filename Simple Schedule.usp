@@ -7,11 +7,11 @@
 
 #User_SimplSharp_Library "Schedule"
 
-Digital_Input _Skip_,_Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event;
-Digital_Output _Skip_,_Skip_, Weekends_Included, Event_Elapsed, Show_Warning;
+Digital_Input _Skip_,_Skip_, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event;
+Digital_Output _Skip_,_Skip_, Weekends_Included, Event_Elapsed, Show_Warning, Event_Saved;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
-integer lock;
+integer schedule_lock, warning_lock;
 
 Integer_Parameter Delay_Time_In_Minutes;
 #Begin_Parameter_Properties Delay_Time_In_Minutes
@@ -26,8 +26,7 @@ Schedule_class mySchedule;
 
 function Recall_Scheduled_Event()
   {
-	Weekends_Included = mySchedule.Include_Weekends;
-    Event_Feedback = mySchedule.Read_Schedule();
+    Event_Feedback = mySchedule.Read_Schedule(Filename);
   }
 
 Push Delay_Scheduled_Event
@@ -43,45 +42,50 @@ Push Recall_Schedule
 
 
 
-Push Save_Schedule
+Change Event_Input
   {
-	    mySchedule.Include_Weekends = Include_Weekends;
-      Event_Feedback = myschedule.Scheduled_Time (Event_Input);
-    	//Recall_Scheduled_Event();
+
+	string Status[128];
+	Status = myschedule.Scheduled_Time (Event_Input, Filename, Include_Weekends);
+	Event_Feedback = Status;
+       if(Find("Schedule set", Status ) > 0)
+           {
+			Pulse(100, Event_Saved);
+		    Recall_Scheduled_Event();
+			}
+
   }
                         
 
  eventhandler Scheduled_Event_Callback(Schedule_class sender, EventArgs e)
   {
-     if(lock = off)
+     if(schedule_lock = off)
   		{
       	Pulse(0, Event_Elapsed);
-  			lock = on;
-  			wait(6000) //wait 1 minute
+  			schedule_lock = on;
+  			wait(6000) //wait ten seconds
   			{
-                   lock = off;
+                   schedule_lock = off;
   				}
   		}	
   }
 
 eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   {
-     if(lock = off)
+     if(warning_lock = off)
   		{
       	Pulse(0, Show_Warning);
-  			lock = on;
-  			wait(6000) //wait 1 minute
-  			{
-                   lock = off;
-  			}
+  			warning_lock = on;
+  			wait(6000) //wait 60 seconds  			{
+                   warning_lock = off;
+  			
   		}	
   }
+
 function main()
   {
-	mySchedule.filename = Filename;
      RegisterEvent(mySchedule, Update, Scheduled_Event_Callback);
 	RegisterEvent(mySchedule, Warning, Warning_Callback);
     Recall_Scheduled_Event();
 	mySchedule.Init();
-
   }
