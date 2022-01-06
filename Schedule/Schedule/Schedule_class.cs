@@ -87,6 +87,8 @@ namespace Schedule
             string simple_CurrentTime = DateTime.Now.ToShortTimeString();
             bool Is_Weekend = false;
 
+            CrestronConsole.PrintLine("simple_CurrentTime = {0}, Schedule_To_Check.Simple_Time = {1}", simple_CurrentTime, Schedule_To_Check.Simple_Time);
+ 
             if (CurrentDay == DayOfWeek.Saturday || CurrentDay == DayOfWeek.Sunday)
             {
                 Is_Weekend = true;
@@ -95,6 +97,7 @@ namespace Schedule
             {
                 if (simple_CurrentTime == Schedule_To_Check.Simple_Time)
                 {
+                    CrestronConsole.PrintLine("Time Match");
                     Update(this, new EventArgs());
                     Event_Delayed = false;
                     Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses

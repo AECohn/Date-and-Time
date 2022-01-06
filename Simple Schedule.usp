@@ -11,7 +11,7 @@ Digital_Input _Skip_,_Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, D
 Digital_Output _Skip_,_Skip_, Weekends_Included, Event_Elapsed, Show_Warning;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
-integer lock;
+integer schedule_lock, warning_lock;
 
 Integer_Parameter Delay_Time_In_Minutes;
 #Begin_Parameter_Properties Delay_Time_In_Minutes
@@ -54,26 +54,26 @@ Push Save_Schedule
 
  eventhandler Scheduled_Event_Callback(Schedule_class sender, EventArgs e)
   {
-     if(lock = off)
+     if(schedule_lock = off)
   		{
       	Pulse(0, Event_Elapsed);
-  			lock = on;
+  			schedule_lock = on;
   			wait(6000) //wait 1 minute
   			{
-                   lock = off;
+                   schedule_lock = off;
   				}
   		}	
   }
 
 eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   {
-     if(lock = off)
+     if(warning_lock = off)
   		{
       	Pulse(0, Show_Warning);
-  			lock = on;
+  			warning_lock = on;
   			wait(6000) //wait 1 minute
   			{
-                   lock = off;
+                   warning_lock = off;
   			}
   		}	
   }
