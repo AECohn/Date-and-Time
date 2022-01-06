@@ -12,7 +12,7 @@ namespace Schedule
         private Full_Schedule Delayed_Schedule = new Full_Schedule();
         private bool Event_Delayed = false;
         //public ushort Include_Weekends;
-        static Func<DateTime, String> TimeToString = x => x.ToShortTimeString();
+        static Func<DateTime, String> TimeToString = x => x.ToString("h:mm tt");
 
         public void Init()
         {
@@ -56,9 +56,9 @@ namespace Schedule
                     //return Recalled_Schedule.SetTime.ToString("h:mm tt");
                     //return Recalled_Schedule.Simple_Time
                     if (Recalled_Schedule.Weekends_Included)
-                        return (Recalled_Schedule.Simple_Time + " Weekends included");
+                        return (Recalled_Schedule.Simple_Time + " Weekends");
                     else
-                        return (Recalled_Schedule.Simple_Time + " Weekends not included");
+                        return (Recalled_Schedule.Simple_Time);
                 }
             }
             catch (Exception exception)

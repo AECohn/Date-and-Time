@@ -8,7 +8,7 @@
 #User_SimplSharp_Library "Schedule"
 
 Digital_Input _Skip_,_Skip_, Save_Schedule, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event;
-Digital_Output _Skip_,_Skip_, Weekends_Included, Event_Elapsed, Show_Warning;
+Digital_Output _Skip_,_Skip_, Weekends_Included, Event_Elapsed, Show_Warning, Event_Saved;
 String_Input  Event_Input[128];
 String_Output Event_Feedback;
 integer schedule_lock, warning_lock;
@@ -44,7 +44,13 @@ Push Recall_Schedule
 
 Push Save_Schedule
   {
-        Event_Feedback = myschedule.Scheduled_Time (Event_Input, Filename, Include_Weekends);
+       if(Find("Schedule set", myschedule.Scheduled_Time (Event_Input, Filename, Include_Weekends)) > 0)
+           {
+			Pulse(100, Event_Saved);
+		    Recall_Scheduled_Event();
+
+			}
+
 
   }
                         
