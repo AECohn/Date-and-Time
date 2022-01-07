@@ -12,11 +12,18 @@ namespace Schedule
         private Full_Schedule Delayed_Schedule = new Full_Schedule();
         private bool Event_Delayed = false;
         public static ushort Warning_Time_Input;
+        private ushort Warning_Time;
         private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
+        public delegate void TimerTransmit(ushort timer);
+        public TimerTransmit Transmit_Timer { get; set; }
+
+        bool Warning_Active;
 
         public void Init()
         {
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
+            Warning_Time = (ushort)(Warning_Time_Input * 60);
+
         }
 
         public string Scheduled_Time(string Input_Time, string filename, ushort Include_Weekends)
@@ -69,9 +76,7 @@ namespace Schedule
             }
         }
 
-        public event EventHandler Update;
-
-        public event EventHandler Warning;
+        public event EventHandler Update, Warning;
 
         public string Delay_Schedule(ushort Minutes_Delayed)
         {
@@ -105,10 +110,18 @@ namespace Schedule
                     Update(this, new EventArgs());
                     Event_Delayed = false;
                     Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
+                    Warning_Active = false;
                 }
                 else if (simple_CurrentTime == Schedule_To_Check.Warning_Time)
                 {
                     Warning(this, new EventArgs());
+                    Warning_Active = true;
+
+                }
+                if (Warning_Active == true)
+                {
+                    Warning_Time -=1;
+                    Transmit_Timer(Warning_Time);
                 }
             }
         }
