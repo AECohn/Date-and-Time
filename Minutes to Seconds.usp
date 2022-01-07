@@ -3,8 +3,9 @@
 #DEFAULT_VOLATILE
 #ENABLE_STACK_CHECKING
 #ENABLE_TRACE
+              
 
-Digital_Input _Skip_, Convert;
+Digital_Input _Skip_, Convert, Minus_One;
 Analog_Output Seconds;
 
 Integer_Parameter Warning_Time_In_Minutes;
@@ -15,7 +16,17 @@ propBounds= 1d , 60d;
 
 
 
+
+
 Push Convert
 	{
-	 Seconds = Warning_Time_In_Minutes*60;
+	if(Minus_One)
+		{
+          Seconds = (Warning_Time_In_Minutes*60)-1;
+
+		}
+	else
+		{
+	 		Seconds = Warning_Time_In_Minutes*60;
+		}
 	}
