@@ -11,6 +11,7 @@ namespace Schedule
         private Full_Schedule Recalled_Schedule;
         private Full_Schedule Delayed_Schedule = new Full_Schedule();
         private bool Event_Delayed = false;
+        public static ushort Warning_Time_Input;
         private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
 
         public void Init()
@@ -140,7 +141,7 @@ namespace Schedule
                 {
                     _setTime = value;
                     Simple_Time = TimeToString(SetTime);
-                    Warning_Time = TimeToString(SetTime.AddMinutes(-15));
+                    Warning_Time = TimeToString(SetTime.AddMinutes(-Convert.ToDouble(Warning_Time_Input)));
                 }
             }
 

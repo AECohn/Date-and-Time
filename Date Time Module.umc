@@ -51,44 +51,113 @@ Mx1=0
 ObjTp=Bw
 H=1
 Lx=0
+Ly=228
+Rx=654
+Ry=456
+Xm=-1
+Ym=-1
+SH=24
+Z=100
+Ht=3
+Hi=4
+]
+[
+ObjTp=Bw
+H=1
+Lx=0
 Ly=0
-Rx=1309
-Ry=305
-Xm=-1
-Ym=-1
-SH=25
-Z=100
-P=2
-Ht=3
-Hi=6
-]
-[
-ObjTp=Bw
-H=1
-Lx=0
-Ly=610
-Rx=1309
-Ry=915
-Xm=-1
-Ym=-1
-SH=27
-Z=100
-Ht=3
-Hi=1
-]
-[
-ObjTp=Bw
-H=1
-Lx=0
-Ly=305
-Rx=1309
-Ry=610
+Rx=654
+Ry=228
 Xm=-1
 Ym=-1
 SH=6
 Z=100
 Ht=3
+Hi=3
+]
+[
+ObjTp=Bw
+H=1
+Lx=0
+Ly=456
+Rx=654
+Ry=684
+Xm=-1
+Ym=-1
+SH=29
+Z=100
+Ht=4
 Hi=1
+]
+[
+ObjTp=Bw
+H=1
+Lx=0
+Ly=684
+Rx=654
+Ry=912
+Xm=-1
+Ym=-1
+SH=30
+Z=100
+Ht=1
+Hi=2
+]
+[
+ObjTp=Bw
+H=1
+Lx=654
+Ly=0
+Rx=1308
+Ry=228
+Xm=-1
+Ym=-1
+SH=28
+Z=100
+Ht=4
+Hi=1
+]
+[
+ObjTp=Bw
+H=1
+Lx=654
+Ly=228
+Rx=1308
+Ry=456
+Xm=-1
+Ym=-1
+SH=25
+Z=100
+Ht=4
+Hi=1
+]
+[
+ObjTp=Bw
+H=1
+Lx=654
+Ly=456
+Rx=1308
+Ry=684
+Xm=-1
+Ym=-1
+SH=33
+Z=100
+Ht=4
+Hi=1
+]
+[
+ObjTp=Bw
+H=1
+Lx=654
+Ly=684
+Rx=1308
+Ry=912
+Xm=-1
+Ym=-1
+SH=31
+Z=100
+Ht=1
+Hi=2
 ]
 [
 ObjTp=Symbol
@@ -159,8 +228,8 @@ OutputSigType12=Serial
 OutputSigType13=Analog
 OutputSigType14=Serial
 ParamSigType1=Constant
-ParamSigType2=String
-ParamSigType3=Constant
+ParamSigType2=Constant
+ParamSigType3=String
 InputCue1=Set_Time_Direct
 InputCue2=Set_Date_Direct
 InputCue3=Scheduled_Event_Direct
@@ -202,9 +271,9 @@ OutputCue11=Set_Time_PM_FB
 OutputCue12=Keypad_Instructions
 OutputCue13=Time_Until_Shutdown
 OutputCue14=Keypad_String
-ParamCue1=Shutdown Time (Seconds)
-ParamCue2=Filename
-ParamCue3=Delay Time (Minutes)
+ParamCue1=Delay Time (Minutes)
+ParamCue2=Warning Time (Minutes)
+ParamCue3=Filename
 FileName=Date Time Module.umc
 EncodingType=0
 ZeroOnIoOk=0
@@ -261,7 +330,7 @@ SmC=156
 Nm=Logic
 ObjVer=1
 CF=2
-mC=9
+mC=10
 C1=7
 C2=8
 C3=10
@@ -271,6 +340,7 @@ C6=14
 C7=13
 C8=24
 C9=11
+C10=32
 ]
 [
 ObjTp=Sm
@@ -344,9 +414,9 @@ O12=50
 O13=60
 O14=54
 mP=3
-P1=Shutdown Time (Seconds)
-P2=Filename
-P3=Delay Time (Minutes)
+P1=Delay Time (Minutes)
+P2=Warning Time (Minutes)
+P3=Filename
 ]
 [
 ObjTp=Sm
@@ -667,7 +737,7 @@ ObjVer=1
 PrH=11
 CF=2
 Cmn1=Shutdown
-mC=8
+mC=9
 C1=25
 C2=26
 C3=27
@@ -675,7 +745,8 @@ C4=28
 C5=23
 C6=29
 C7=30
-C8=31
+C8=33
+C9=31
 ]
 [
 ObjTp=Sm
@@ -830,26 +901,27 @@ Nm=Simple Schedule.usp
 ObjVer=1
 PrH=4
 CF=2
-n1I=5
+n1I=6
 n2I=1
-n1O=6
+n1O=7
 Cmn1=Sets Shutdown Time, outputs pulse when Shutdown elapses\\
-mI=6
-I3=12
-I4=41
-I5=46
-I6=56
-mO=7
-tO=7
-O3=24
-O4=21
-O5=53
-O6=55
-O7=16
-mP=3
+mI=7
+I4=12
+I5=41
+I6=46
+I7=56
+mO=8
+tO=8
+O4=24
+O5=21
+O6=53
+O7=55
+O8=16
+mP=4
 P1=
 P2=#Delay Time (Minutes)
-P3=#Filename
+P3=#Warning Time (Minutes)
+P4=#Filename
 ]
 [
 ObjTp=Sm
@@ -873,7 +945,7 @@ P1=1d
 P2=0s
 P3=0s
 P4=0d
-P5=#Shutdown Time (Seconds)
+P5=65534d
 P6=0d
 ]
 [
@@ -906,9 +978,11 @@ PrH=16
 CF=2
 n1I=1
 n1O=1
+OpF=0
+HandF=1
 Cmn1=Set Shutdown Warning Time In Seconds\\
 mI=1
-I1=21
+I1=53
 mO=1
 tO=1
 O1=60
@@ -966,7 +1040,7 @@ n1O=1
 Cmn1=Stop Oscillator
 mI=3
 I1=58
-I2=51
+I2=47
 I3=46
 mO=1
 tO=1
@@ -975,21 +1049,52 @@ O1=49
 [
 ObjTp=Sm
 H=31
-SmC=409
-Nm=Logic Wave Pulse
+SmC=103
+Nm=Minutes to Seconds.usp
 ObjVer=1
 PrH=16
 CF=2
-n1I=3
-n1O=2
-Cmn1=Countdown Complete Pulse\\
-mI=3
-I1=58
-mO=2
-tO=2
+n1I=2
+mI=2
+I2=2
+mO=1
+tO=1
 O1=51
-mP=1
-P1=1d
+mP=2
+P1=
+P2=#Warning Time (Minutes)
+]
+[
+ObjTp=Sm
+H=32
+SmC=470
+Nm=Serial Force
+ObjVer=1
+PrH=4
+CF=2
+n1I=3
+mI=3
+I1=8
+I2=9
+I3=11
+]
+[
+ObjTp=Sm
+H=33
+SmC=46
+Nm=Analog Buffer
+ObjVer=1
+PrH=16
+CF=2
+n1I=2
+n1O=1
+Cmn1=Shutdown Time in Seconds
+mI=2
+I1=53
+I2=51
+mO=1
+tO=1
+O1=60
 ]
 [
 ObjTp=Sg
@@ -1242,7 +1347,8 @@ SgTp=4
 [
 ObjTp=Sg
 H=51
-Nm=Countdown_Complete_lwp
+Nm=Shutdown_Time_Seconds
+SgTp=2
 ]
 [
 ObjTp=Sg

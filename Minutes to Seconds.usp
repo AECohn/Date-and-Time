@@ -1,0 +1,21 @@
+//Programmer: Aviv Cohn
+
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+
+Digital_Input _Skip_, Convert;
+Analog_Output Seconds;
+
+Integer_Parameter Warning_Time_In_Minutes;
+#Begin_Parameter_Properties Warning_Time_In_Minutes
+propValidUnits = unitDecimal;
+propBounds= 1d , 60d;
+#End_Parameter_Properties
+
+
+
+Push Convert
+	{
+	 Seconds = Warning_Time_In_Minutes*60;
+	}
