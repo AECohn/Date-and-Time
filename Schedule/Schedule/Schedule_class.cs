@@ -16,14 +16,11 @@ namespace Schedule
         private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
         public delegate void TimerTransmit(ushort timer);
         public TimerTransmit Transmit_Timer { get; set; }
-
-        bool Warning_Active;
+        bool Warning_Active = false;
 
         public void Init()
         {
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
-            Warning_Time = (ushort)(Warning_Time_Input * 60);
-
         }
 
         public string Scheduled_Time(string Input_Time, string filename, ushort Include_Weekends)
@@ -89,6 +86,7 @@ namespace Schedule
                 Delayed_Schedule.SetTime = Recalled_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
                 Delayed_Schedule.Weekends_Included = Recalled_Schedule.Weekends_Included;
             }
+            Warning_Active = false;
             Event_Delayed = true;
             return TimeToString(Delayed_Schedule.SetTime);
         }
@@ -112,16 +110,18 @@ namespace Schedule
                     Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
                     Warning_Active = false;
                 }
-                else if (simple_CurrentTime == Schedule_To_Check.Warning_Time)
+                else if (simple_CurrentTime == Schedule_To_Check.Warning_Time && Warning_Active == false)
                 {
+                    Warning_Time = (ushort)(Warning_Time_Input * 60);
                     Warning(this, new EventArgs());
                     Warning_Active = true;
 
                 }
                 if (Warning_Active == true)
                 {
-                    Warning_Time -=1;
                     Transmit_Timer(Warning_Time);
+                    Warning_Time -= 1;
+
                 }
             }
         }
