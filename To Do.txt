@@ -1,0 +1,3 @@
+To Do:
+
+Half second discrepancy between timer and reported date time. Perhaps date time feedback should come from simpl#
