@@ -13,6 +13,7 @@ Analog_Output Timer_Output;
 String_Input  Event_Input[128];
 String_Output Event_Feedback, Date_Time;
 integer schedule_lock, warning_lock;
+String Temp_Date_Time[128];
 
 Integer_Parameter Delay_Time_In_Minutes;
 #Begin_Parameter_Properties Delay_Time_In_Minutes
@@ -93,9 +94,17 @@ eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
 
 callback function Date_and_Time_Callback(integer Timer, string Date_and_Time)
 {
-  	Timer_Output = Timer;
-	Date_Time = Date_and_Time;
 
+	if(Temp_Date_Time <> Date_and_Time)
+		{
+            Temp_Date_Time = Date_and_Time;
+			Date_Time = Temp_Date_Time;
+		}
+
+	if(Timer_Output <> Timer)
+		{
+		Timer_Output = Timer;
+		}
 }
 
 

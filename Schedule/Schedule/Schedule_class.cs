@@ -16,8 +16,6 @@ namespace Schedule
         private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
         public delegate void DateTimeTransmit(ushort timer, SimplSharpString Date_and_Time );
         public DateTimeTransmit Transmit_DateTime { get; set; }
-        //public delegate void DateTimeTransmit(SimplSharpString Date_and_Time);
-        //public DateTimeTransmit Update_Date_TIme {get; set;}
         bool Warning_Active = false;
 
         public void Init()
