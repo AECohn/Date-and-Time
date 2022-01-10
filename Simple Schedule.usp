@@ -91,10 +91,10 @@ eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   		}	
   }
 
-callback function CountdownTimer(integer Timer, string Date_and_Time)
+callback function Date_and_Time_Callback(integer Timer, string Date_and_Time)
 {
-  Timer_Output = Timer;
-Date_Time = Date_and_Time;
+  	Timer_Output = Timer;
+	Date_Time = Date_and_Time;
 
 }
 
@@ -103,7 +103,7 @@ function main()
   {
      RegisterEvent(mySchedule, Update, Scheduled_Event_Callback);
 	RegisterEvent(mySchedule, Warning, Warning_Callback);
-		RegisterDelegate(mySchedule, Transmit_Timer, CountdownTimer); 
+		RegisterDelegate(mySchedule, Transmit_DateTime, Date_and_Time_Callback); 
 
 	Schedule_class.Warning_Time_Input = Warning_Time_In_Minutes; 
     Recall_Scheduled_Event();
