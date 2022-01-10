@@ -11,7 +11,7 @@ Digital_Input _Skip_,_Skip_,_Skip_, Recall_Schedule, Include_Weekends, Delay_Sch
 Digital_Output _Skip_,_Skip_, _Skip_, Weekends_Included, Event_Elapsed, Show_Warning, Event_Saved;
 Analog_Output Timer_Output;
 String_Input  Event_Input[128];
-String_Output Event_Feedback;
+String_Output Event_Feedback, Date_Time;
 integer schedule_lock, warning_lock;
 
 Integer_Parameter Delay_Time_In_Minutes;
@@ -91,9 +91,11 @@ eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   		}	
   }
 
-callback function CountdownTimer(integer Timer)
+callback function CountdownTimer(integer Timer, string Date_and_Time)
 {
   Timer_Output = Timer;
+Date_Time = Date_and_Time;
+
 }
 
 

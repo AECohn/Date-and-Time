@@ -14,8 +14,10 @@ namespace Schedule
         public static ushort Warning_Time_Input;
         private ushort Warning_Time;
         private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
-        public delegate void TimerTransmit(ushort timer);
+        public delegate void TimerTransmit(ushort timer, SimplSharpString Date_and_Time );
         public TimerTransmit Transmit_Timer { get; set; }
+        //public delegate void DateTimeTransmit(SimplSharpString Date_and_Time);
+        //public DateTimeTransmit Update_Date_TIme {get; set;}
         bool Warning_Active = false;
 
         public void Init()
@@ -97,6 +99,10 @@ namespace Schedule
             string simple_CurrentTime = TimeToString(DateTime.Now);
             bool Is_Weekend = false;
 
+            string Output_DateTime = DateTime.Now.ToString("MMMM dd, yyyy h:mm tt");
+            Transmit_Timer(Warning_Time, Output_DateTime);
+
+
             if (CurrentDay == DayOfWeek.Saturday || CurrentDay == DayOfWeek.Sunday)
             {
                 Is_Weekend = true;
@@ -119,7 +125,6 @@ namespace Schedule
                 }
                 if (Warning_Active == true)
                 {
-                    Transmit_Timer(Warning_Time);
                     Warning_Time -= 1;
 
                 }
