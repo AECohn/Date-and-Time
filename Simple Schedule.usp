@@ -72,8 +72,9 @@ Change Event_Input
      if(schedule_lock = off)
   		{
       	Pulse(0, Event_Elapsed);
+    	Recall_Scheduled_Event();
   			schedule_lock = on;
-  			wait(6000) //wait ten seconds
+  			wait(6000) //wait 60 seconds
   			{
                    schedule_lock = off;
   				}
