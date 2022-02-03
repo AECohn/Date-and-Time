@@ -11,7 +11,7 @@ Digital_Input _Skip_,_Skip_,_Skip_, Recall_Schedule, Include_Weekends, Delay_Sch
 Digital_Output _Skip_,_Skip_, _Skip_, Weekends_Included, Event_Elapsed, Show_Warning, Event_Saved;
 Analog_Output Timer_Output;
 String_Input  Event_Input[128];
-String_Output Event_Feedback, Date_Time;
+String_Output Event_Feedback, Date_Time, Date_Only, Time_Only;
 integer schedule_lock, warning_lock;
 String Temp_Date_Time[128];
 
@@ -99,13 +99,15 @@ eventhandler Warning_Callback (Schedule_class sender, EventArgs e)
   		}	
   }
 
-callback function Date_and_Time_Callback(integer Timer, string Date_and_Time)
+callback function Date_and_Time_Callback(integer Timer, string Date_and_Time, string Date_String, string Time_String)
 {
 
 	if(Temp_Date_Time <> Date_and_Time)
 		{
             Temp_Date_Time = Date_and_Time;
 			Date_Time = Temp_Date_Time;
+			Date_Only = Date_String;
+			Time_Only = Time_String;
 		}
 
 	if(Timer_Output <> Timer)
