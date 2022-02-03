@@ -19,18 +19,24 @@ Integer_Parameter Delay_Time_In_Minutes;
 #Begin_Parameter_Properties Delay_Time_In_Minutes
 propValidUnits = unitDecimal;
 propBounds= 15d , 120d;
+propDefaultValue = 15d;
 #End_Parameter_Properties
 
 Integer_Parameter Warning_Time_In_Minutes;
 #Begin_Parameter_Properties Warning_Time_In_Minutes
 propValidUnits = unitDecimal;
 propBounds= 1d , 60d;
+propDefaultValue = 1d;
 #End_Parameter_Properties
 
 
 
 
 string_parameter  Filename[128];
+#Begin_Parameter_Properties Filename
+propdefaultvalue = "";
+#End_Parameter_Properties
+
 
 Schedule_class mySchedule;
 
