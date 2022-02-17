@@ -3,23 +3,24 @@ using Crestron.SimplSharp;
 using Crestron.SimplSharp.CrestronIO;
 using Newtonsoft.Json;
 
-namespace Schedule
+namespace DGI_Schedule
 {
     public class Schedule_class
     {
         private CTimer Scheduling;
         private Full_Schedule Recalled_Schedule;
-        private Full_Schedule Delayed_Schedule = new Full_Schedule();
+        private Full_Schedule Delayed_Schedule;
         private bool Event_Delayed = false;
-        public static ushort Warning_Time_Input;
+        public ushort Warning_Time_Input;
         private ushort Warning_Time;
-        private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
+        //private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
         public delegate void DateTimeTransmit(ushort timer, SimplSharpString Date_and_Time, SimplSharpString Date, SimplSharpString Time);
         public DateTimeTransmit Transmit_DateTime { get; set; }
         bool Warning_Active = false;
 
-        public void Init()
+        public void Init(ushort _Warning_Time_Input)
         {
+            Warning_Time_Input = _Warning_Time_Input;
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
@@ -27,7 +28,7 @@ namespace Schedule
         {
             try
             {
-                Full_Schedule Write_Schedule = new Full_Schedule();
+                Full_Schedule Write_Schedule = new Full_Schedule(Warning_Time_Input);
 
                 Write_Schedule.SetTime = DateTime.Parse(Input_Time.ToUpper());
                 Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
@@ -37,7 +38,7 @@ namespace Schedule
                     Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
                 }
 
-                Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule if a new Scheduled Time is set
+                Delayed_Schedule = new Full_Schedule(Warning_Time_Input); ; //Clears Delayed_Schedule if a new Scheduled Time is set
                 Event_Delayed = false;
                 return ("Schedule set");
             }
@@ -50,7 +51,7 @@ namespace Schedule
 
         public string Read_Schedule(string filename)
         {
-            Recalled_Schedule = new Full_Schedule();
+            Recalled_Schedule = new Full_Schedule(Warning_Time_Input);
             try
             {
                 using (StreamReader Schedule_Reader = new StreamReader(String.Format("{0}{1}.json", "\\user\\", filename)))
@@ -88,13 +89,13 @@ namespace Schedule
             }
             Warning_Active = false;
             Event_Delayed = true;
-            return TimeToString(Delayed_Schedule.SetTime);
+            return Delayed_Schedule.SetTime.ToString("h:mm tt");
         }
 
         private void Schedule_Checker(Full_Schedule Schedule_To_Check)
         {
             DayOfWeek CurrentDay = DateTime.Now.DayOfWeek;
-            string simple_CurrentTime = TimeToString(DateTime.Now);
+            string simple_CurrentTime = DateTime.Now.ToString("h:mm tt");
             bool Is_Weekend = false;
 
             string Output_DateTime = DateTime.Now.ToString("MMMM dd, yyyy h:mm tt");
@@ -114,7 +115,7 @@ namespace Schedule
                 {
                     Update(this, new EventArgs());
                     Event_Delayed = false;
-                    Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
+                    Delayed_Schedule = new Full_Schedule(Warning_Time_Input); ; //Clears Delayed_Schedule when event elapses
                     Warning_Active = false;
                 }
                 else if (simple_CurrentTime == Schedule_To_Check.Warning_Time && Warning_Active == false)
@@ -144,28 +145,39 @@ namespace Schedule
             }
         }
 
-        public class Full_Schedule
+        
+    }
+
+    internal class Full_Schedule
+    {
+        private ushort Warning_Time_Input;
+        public string Warning_Time;
+        private DateTime _setTime;
+        //private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
+
+
+        public DateTime SetTime
         {
-            public string Warning_Time;
-            private DateTime _setTime;
-
-            public DateTime SetTime
+            get
             {
-                get
-                {
-                    return _setTime;
-                }
-
-                set
-                {
-                    _setTime = value;
-                    Simple_Time = TimeToString(SetTime);
-                    Warning_Time = TimeToString(SetTime.AddMinutes(-Convert.ToDouble(Warning_Time_Input)));
-                }
+                return _setTime;
             }
 
-            public string Simple_Time;
-            public bool Weekends_Included;
+            set
+            {
+                _setTime = value;
+                Simple_Time = SetTime.ToString("h:mm tt");
+                Warning_Time = SetTime.AddMinutes(-Convert.ToDouble(Warning_Time_Input)).ToString("h:mm tt");
+            }
         }
+
+        public string Simple_Time;
+        public bool Weekends_Included;
+
+        internal Full_Schedule(ushort warningTimeInput)
+        {
+            Warning_Time_Input = warningTimeInput;
+        }
+    
     }
 }
