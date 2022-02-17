@@ -7,7 +7,7 @@
 
 #User_SimplSharp_Library "Schedule"
 
-/*Digital_Input _Skip_,_Skip_,_Skip_, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event, Initialize;
+Digital_Input _Skip_,_Skip_,_Skip_, Recall_Schedule, Include_Weekends, Delay_Scheduled_Event, Initialize;
 Digital_Output _Skip_,_Skip_, _Skip_, Weekends_Included, Event_Elapsed, Show_Warning, Event_Saved;
 Analog_Output Timer_Output;
 String_Input  Event_Input[128];
@@ -35,15 +35,11 @@ propDefaultValue = 1d;
 string_parameter  Filename[128];
 #Begin_Parameter_Properties Filename
 propdefaultvalue = "";
-#End_Parameter_Properties*/
-
-Digital_Input Test;
+#End_Parameter_Properties
 
 
 Schedule_class mySchedule;
 
-//Full_Schedule mySchedule;
-/*
 function Recall_Scheduled_Event()
   {
     Event_Feedback = mySchedule.Read_Schedule(Filename);
@@ -80,9 +76,9 @@ Change Event_Input
 Push Initialize
 {
   
-	Schedule_class.Warning_Time_Input = Warning_Time_In_Minutes; 
+	//Schedule_class.Warning_Time_Input = Warning_Time_In_Minutes; 
     Recall_Scheduled_Event();
-	mySchedule.Init();
+	mySchedule.Init(Warning_Time_In_Minutes);
 
 }
                         
@@ -137,4 +133,3 @@ function main()
 	RegisterEvent(mySchedule, Warning, Warning_Callback);
 		RegisterDelegate(mySchedule, Transmit_DateTime, Date_and_Time_Callback); 
   }
-*/
