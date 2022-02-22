@@ -13,7 +13,7 @@ namespace Schedule
         private bool Event_Delayed = false;
         public static ushort Warning_Time_Input;
         private ushort Warning_Time;
-        private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
+        //private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
         public delegate void DateTimeTransmit(ushort timer, SimplSharpString Date_and_Time, SimplSharpString Date, SimplSharpString Time);
         public DateTimeTransmit Transmit_DateTime { get; set; }
         bool Warning_Active = false;
@@ -21,6 +21,11 @@ namespace Schedule
         public void Init()
         {
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
+        }
+
+        public static string TimeToString(DateTime Time)
+        {
+            return Time.ToString("h:mm tt");
         }
 
         public string Scheduled_Time(string Input_Time, string filename, ushort Include_Weekends)
