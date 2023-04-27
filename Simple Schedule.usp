@@ -38,7 +38,7 @@ propdefaultvalue = "";
 #End_Parameter_Properties
 
 
-Schedule_class mySchedule;
+Schedule_class mySchedule[10];
 
 function Recall_Scheduled_Event()
   {

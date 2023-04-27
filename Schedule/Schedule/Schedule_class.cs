@@ -149,7 +149,7 @@ namespace Schedule
             }
         }
 
-        public class Full_Schedule
+        private class Full_Schedule
         {
             public string Warning_Time;
             private DateTime _setTime;
