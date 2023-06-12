@@ -7,6 +7,7 @@ namespace DGI_Schedule
 {
     public class Schedule_class
     {
+        private int currentSecond;
         private CTimer Scheduling;
         private Full_Schedule Recalled_Schedule;
         private Full_Schedule Delayed_Schedule;
@@ -94,6 +95,7 @@ namespace DGI_Schedule
 
         private void Schedule_Checker(Full_Schedule Schedule_To_Check)
         {
+            ushort timeSecond = (ushort)DateTime.Now.Second;
             DayOfWeek CurrentDay = DateTime.Now.DayOfWeek;
             string simple_CurrentTime = DateTime.Now.ToString("h:mm tt");
             bool Is_Weekend = false;
@@ -103,6 +105,15 @@ namespace DGI_Schedule
             string Output_Time = DateTime.Now.ToString("h:mm tt");
              
             Transmit_DateTime(Warning_Time, Output_DateTime, Output_Date, Output_Time);
+
+            if (timeSecond != currentSecond)
+            {
+                if (Warning_Active)
+                {
+                    Warning_Time = timeSecond;
+                }
+                currentSecond = timeSecond;
+            }
 
 
             if (CurrentDay == DayOfWeek.Saturday || CurrentDay == DayOfWeek.Sunday)
@@ -125,7 +136,7 @@ namespace DGI_Schedule
                     Warning_Active = true;
 
                 }
-                if (Warning_Active == true)
+                if (Warning_Active)
                 {
                     Warning_Time -= 1;
 
