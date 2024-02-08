@@ -77,8 +77,8 @@ Push Initialize
 {
   
 	//Schedule_class.Warning_Time_Input = Warning_Time_In_Minutes; 
-    Recall_Scheduled_Event();
 	mySchedule.Init(Warning_Time_In_Minutes);
+	Recall_Scheduled_Event();
 
 }
                         

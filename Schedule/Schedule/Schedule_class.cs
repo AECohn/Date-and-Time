@@ -19,6 +19,10 @@ namespace DGI_Schedule
         public DateTimeTransmit Transmit_DateTime { get; set; }
         bool Warning_Active = false;
 
+        public Schedule_class()
+        {
+        }
+
         public void Init(ushort _Warning_Time_Input)
         {
             Warning_Time_Input = _Warning_Time_Input;
@@ -161,12 +165,12 @@ namespace DGI_Schedule
 
     internal class Full_Schedule
     {
+        
         private ushort Warning_Time_Input;
         public string Warning_Time;
         private DateTime _setTime;
         //private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
-
-
+       
         public DateTime SetTime
         {
             get
@@ -184,6 +188,10 @@ namespace DGI_Schedule
 
         public string Simple_Time;
         public bool Weekends_Included;
+
+        public Full_Schedule()
+        {
+        }
 
         internal Full_Schedule(ushort warningTimeInput)
         {
