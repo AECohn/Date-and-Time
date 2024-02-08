@@ -12,7 +12,7 @@ namespace DGI_Schedule
         private Full_Schedule Recalled_Schedule;
         private Full_Schedule Delayed_Schedule;
         private bool Event_Delayed = false;
-        public ushort Warning_Time_Input;
+        private ushort _Warning_Time_Input;
         private ushort Warning_Time;
         //private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
         public delegate void DateTimeTransmit(ushort timer, SimplSharpString Date_and_Time, SimplSharpString Date, SimplSharpString Time);
@@ -23,9 +23,9 @@ namespace DGI_Schedule
         {
         }
 
-        public void Init(ushort _Warning_Time_Input)
+        public void Init(ushort Warning_Time_Input)
         {
-            Warning_Time_Input = _Warning_Time_Input;
+            _Warning_Time_Input = Warning_Time_Input;
             Scheduling = new CTimer(scheduler, this, 0, 1000); //Checks if current time matches recalled schedule every second
         }
 
@@ -33,9 +33,9 @@ namespace DGI_Schedule
         {
             try
             {
-                Full_Schedule Write_Schedule = new Full_Schedule(Warning_Time_Input);
+                Full_Schedule Write_Schedule = new Full_Schedule();
 
-                Write_Schedule.SetTime = DateTime.Parse(Input_Time.ToUpper());
+                Write_Schedule.ScheduleTime = DateTime.Parse(Input_Time.ToUpper());
                 Write_Schedule.Weekends_Included = Include_Weekends == 1 ? true : false;
 
                 using (StreamWriter Schedule_Writer = new StreamWriter(String.Format("{0}{1}.json", "\\user\\", filename)))
@@ -43,7 +43,7 @@ namespace DGI_Schedule
                     Schedule_Writer.Write(JsonConvert.SerializeObject(Write_Schedule));
                 }
 
-                Delayed_Schedule = new Full_Schedule(Warning_Time_Input); ; //Clears Delayed_Schedule if a new Scheduled Time is set
+                Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule if a new Scheduled Time is set
                 Event_Delayed = false;
                 return ("Schedule set");
             }
@@ -56,7 +56,8 @@ namespace DGI_Schedule
 
         public string Read_Schedule(string filename)
         {
-            Recalled_Schedule = new Full_Schedule(Warning_Time_Input);
+            Recalled_Schedule = new Full_Schedule();
+
             try
             {
                 using (StreamReader Schedule_Reader = new StreamReader(String.Format("{0}{1}.json", "\\user\\", filename)))
@@ -85,16 +86,16 @@ namespace DGI_Schedule
         {
             if (Event_Delayed)
             {
-                Delayed_Schedule.SetTime = Delayed_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
+                Delayed_Schedule.ScheduleTime = Delayed_Schedule.ScheduleTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
             }
             else
             {
-                Delayed_Schedule.SetTime = Recalled_Schedule.SetTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
+                Delayed_Schedule.ScheduleTime = Recalled_Schedule.ScheduleTime.AddMinutes(Convert.ToDouble(Minutes_Delayed));
                 Delayed_Schedule.Weekends_Included = Recalled_Schedule.Weekends_Included;
             }
             Warning_Active = false;
             Event_Delayed = true;
-            return Delayed_Schedule.SetTime.ToString("h:mm tt");
+            return Delayed_Schedule.ScheduleTime.ToString("h:mm tt");
         }
 
         private void Schedule_Checker(Full_Schedule Schedule_To_Check)
@@ -102,6 +103,8 @@ namespace DGI_Schedule
             ushort timeSecond = (ushort)DateTime.Now.Second;
             DayOfWeek CurrentDay = DateTime.Now.DayOfWeek;
             string simple_CurrentTime = DateTime.Now.ToString("h:mm tt");
+            string simple_WarningTime = Schedule_To_Check.ScheduleTime.AddMinutes(-(double)_Warning_Time_Input).ToString("h:mm tt");
+            CrestronConsole.PrintLine(simple_WarningTime);
             bool Is_Weekend = false;
 
             string Output_DateTime = DateTime.Now.ToString("MMMM dd, yyyy h:mm tt");
@@ -130,12 +133,12 @@ namespace DGI_Schedule
                 {
                     Update(this, new EventArgs());
                     Event_Delayed = false;
-                    Delayed_Schedule = new Full_Schedule(Warning_Time_Input); ; //Clears Delayed_Schedule when event elapses
+                    Delayed_Schedule = new Full_Schedule(); ; //Clears Delayed_Schedule when event elapses
                     Warning_Active = false;
                 }
-                else if (simple_CurrentTime == Schedule_To_Check.Warning_Time && Warning_Active == false)
+                else if (simple_CurrentTime == simple_WarningTime && Warning_Active == false)
                 {
-                    Warning_Time = (ushort)(Warning_Time_Input * 60);
+                    Warning_Time = (ushort)(_Warning_Time_Input * 60);
                     Warning(this, new EventArgs());
                     Warning_Active = true;
 
@@ -166,23 +169,20 @@ namespace DGI_Schedule
     internal class Full_Schedule
     {
         
-        private ushort Warning_Time_Input;
-        public string Warning_Time;
-        private DateTime _setTime;
-        //private static Func<DateTime, String> TimeToString = time => time.ToString("h:mm tt");
+        private DateTime _scheduleTime;
+        
        
-        public DateTime SetTime
+        public DateTime ScheduleTime
         {
             get
             {
-                return _setTime;
+                return _scheduleTime;
             }
 
             set
             {
-                _setTime = value;
-                Simple_Time = SetTime.ToString("h:mm tt");
-                Warning_Time = SetTime.AddMinutes(-Convert.ToDouble(Warning_Time_Input)).ToString("h:mm tt");
+                _scheduleTime = value;
+                Simple_Time = ScheduleTime.ToString("h:mm tt");
             }
         }
 
@@ -193,10 +193,7 @@ namespace DGI_Schedule
         {
         }
 
-        internal Full_Schedule(ushort warningTimeInput)
-        {
-            Warning_Time_Input = warningTimeInput;
-        }
+        
     
     }
 }
