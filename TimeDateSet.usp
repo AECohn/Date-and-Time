@@ -1,0 +1,24 @@
+//Programmer: Aviv Cohn
+
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+
+#User_SimplSharp_Library "SetDateTime"
+
+
+String_Input TimeSet[65534], DateSet[65534];
+String_output DateTime;
+
+
+Change TimeSet
+{
+
+     DateTime = DateTimeSet.setTime(TimeSet);
+}
+
+Change DateSet
+{
+
+     DateTime = DateTimeSet.setDate(DateSet);
+}  
